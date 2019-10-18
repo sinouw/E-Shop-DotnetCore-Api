@@ -88,7 +88,7 @@
                                     <ng-container matColumnDef="image">
                                         <th class="text-nowrap px-3" mat-header-cell *matHeaderCellDef>Image</th>
                                         <td class="text-nowrap team-images-wrap py-3 px-3" mat-cell *matCellDef="let element">
-                                            <img class="img-circle inline-block" src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" width="30" height="30">
+                                            <img class="img-circle inline-block" [src]="element?.FrontImg" width="30" height="30">
                                         </td>
                                     </ng-container>
                                     <ng-container matColumnDef="NomProduit">
@@ -141,7 +141,8 @@
                 <mat-card class="product-card">
                     <a class="p-link">
                         <!-- <img width="626" height="800" mat-card-image [src]="product?.image" alt="Photo of a Shiba Inu"> -->
-                        <img width="626" height="800" mat-card-image src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" alt="Photo of a Shiba Inu">
+                        <!-- <img width="626" height="800" mat-card-image src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" alt="Photo of a Shiba Inu"> -->
+                        <img width="626px" height="300px" mat-card-image [src]="product?.FrontImg" alt="Photo of a Shiba Inu">
                     </a>
                     <div class="wishlist-icon">
                         <a (click)="deleteProduct(product.IdProd,i)">

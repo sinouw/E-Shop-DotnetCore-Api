@@ -10,13 +10,23 @@ import {BaseUrl} from '../../../models/baseurl.data';
   styleUrls: ['./DetailPage.component.scss']
 })
 export class DetailPageComponent implements OnInit {
-
+   'data': any = [
+      {
+          'image': 'https://via.placeholder.com/625x800',
+          'image_gallery': [
+              'https://via.placeholder.com/625x800',
+          ]
+      }
+  ];
    Product              :any
    id                : any;
    type              : any;
    apiResponse       : any;
    singleProductData : any;
    productsList      : any;
+   mainImgPath: any;
+   Images: any = [];
+   ImagesPath: any= [];
 
    constructor(private route: ActivatedRoute,
               private router: Router,
@@ -64,6 +74,16 @@ export class DetailPageComponent implements OnInit {
       this.genericservice.get(BaseUrl+'/produits/'+this.id)
       .subscribe(res=>{
          this.Product=res
+         this.mainImgPath=res.FrontImg
+         this.Images=res.Images
+
+
+         this.Images.forEach(e => {
+            this.ImagesPath.push(e.ImageName)
+        });
+
+        this.data[0].image_gallery=this.ImagesPath
+
          console.log(this.Product);
       },
       err=>{
@@ -74,5 +94,15 @@ export class DetailPageComponent implements OnInit {
 redirecttoCatpage(){
    this.router.navigate(['/products', this.Product.NsousCategorie]);
 }
+
+  /**
+     * getImagePath is used to change the image path on click event.
+     */
+    public getImagePath(imgPath: string, index: number) {
+      // console.log(imgPath,index);
+      document.querySelector('.border-active').classList.remove('border-active');
+      this.mainImgPath = imgPath;
+      document.getElementById(index + '_img').className += ' border-active';
+  }
 
 }

@@ -1,0 +1,117 @@
+<form [formGroup]="form">
+    <!-- <div class="product-detail-page section-gap" *ngIf="editProductDetail"> -->
+    <div class="product-detail-page section-gap">
+        <div class="container">
+            <div fxLayout='row wrap' fxLayoutAlign="center center" class="col-gap">
+                <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=90 fxFlex.lg="80" fxFlex.xl="90">
+                    <div fxLayout='row wrap' class="col-gap position-relative">
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=50 fxFlex.lg="50" fxFlex.xl="50">
+                            <div fxLayout='row wrap'>
+                                <div fxFlex.xs="15" fxFlex.sm="15" fxFlex.md="15" fxFlex.lg="15" fxFlex.xl="15">
+                                    <div class="product-detail-image-gallery pr-4">
+                                        <mat-grid-list cols="1" rowHeight="1:1" gutterSize="20px">
+                                            <mat-grid-tile *ngFor="let img of editProductDetail?.image_gallery; let i=index">
+                                                <div class="product-image-gallery-item edit-icon">
+                                                    <a id="{{i}}_img" class="p-link" [ngClass]="{ 'border-active': i === 0 }" href="javascript:void(0)" (mouseenter)="getImagePath(img, i)">
+                                                        <img [src]="img" alt="">
+                                                    </a>
+                                                    <button class="edit-btn" md-mini-fab type="button">
+                                          <label for="fileToUpload"><mat-icon>edit</mat-icon></label>
+                                       </button>
+                                                    <input mat id="fileToUpload" type="file" accept="image/*" style="display:none;">
+                                                </div>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
+                                    </div>
+                                    <!-- product-detail-image-gallery -->
+                                </div>
+                                <div fxFlex.xs="85" fxFlex.sm="85" fxFlex.md="85" fxFlex.lg="85" fxFlex.xl="85" class="relative" *ngIf="mainImgPath">
+                                    <embryo-ImgZoom [imgSrc]="mainImgPath" imgStyle="width:auto; height:auto;" resultStyle="background-repeat: no-repeat; z-index: 2; position:absolute;
+                                               -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+                                                box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); top: 0;left: 100%;" lensStyle="width:100px; height:100px" containerStyle="">
+                                    </embryo-ImgZoom>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxFlex.xs="100" fxFlex.sm="100" fxFlex.md=50 fxFlex.lg="50" fxFlex.xl="50">
+                            <div class="product-detail-content ml-3">
+                                <a class="primary-color font-medium" href="javascript:void(0)" routerLink="/admin-panel/products">Retour vers produits</a>
+                                <br />
+                                <br />
+                                <br />
+
+                                <span class="font-medium"> Ajouter le nom du produit </span>:
+                                <h3 class="add-text"><input matInput formControlName="NomProduit" type="text" placeholder="product Name" autocomplete="off"></h3>
+                                <span class="font-medium"> Ajouter le prix </span>:
+                                <div class="product-detail-price">
+                                    <h4 class="accent-color add-text"><input matInput type="number" formControlName="Prix" placeholder="Prix" autocomplete="off"></h4>
+                                </div>
+
+                                <span class="font-medium"> Ajouter la remise </span>:
+                                <div class="product-detail-price">
+                                    <h5 class="accent-color add-text"><input matInput type="number" formControlName="Remise" placeholder="Remise" autocomplete="off"></h5>
+                                </div>
+                                <span class="font-medium"> Ajouter la Marque </span>:
+                                <div class="product-detail-price">
+                                    <h5 class="primary-color add-text"><input matInput formControlName="Marque" placeholder="Marque" autocomplete="off"></h5>
+                                </div>
+
+                                <div class="no-style mb-4">
+                                    <span class="font-medium"> Disponibilité </span>:
+                                    <div class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                        <mat-select class="ml-2" matNativeControl formControlName="Disponible" placeholder="Disponibilité" type="text" autocomplete="off">
+                                            <mat-option value="true">Yes</mat-option>
+                                            <mat-option value="false">No</mat-option>
+                                        </mat-select>
+                                    </div>
+
+                                </div>
+                                <div class="no-style mb-4">
+                                    <span class="font-medium"> Couleur </span>:
+                                    <div class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
+
+                                        <mat-select class="ml-2" matNativeControl formControlName="Couleur" type="text" placeholder="Color" autocomplete="off">
+                                            <mat-option value="Blanc">Blanc</mat-option>
+                                            <mat-option value="Noir">Noir</mat-option>
+                                            <mat-option value="Doré">Doré</mat-option>
+                                            <mat-option value="Silver">Gris</mat-option>
+                                            <mat-option value="Rouge">Rouge</mat-option>
+                                            <mat-option value="Jaune">Jaune</mat-option>
+                                            <mat-option value="Vert">Vert</mat-option>
+                                            <mat-option value="Bleu">Bleu</mat-option>
+                                            <mat-option value="orange">orange</mat-option>
+                                            <mat-option value="Rose">Rose</mat-option>
+                                            <mat-option value="Marron">Marron</mat-option>
+                                            <mat-option value="Violet">Violet</mat-option>
+                                        </mat-select>
+                                    </div>
+
+                                </div>
+                                <div class="short-des">
+                                    <span class="font-medium"> Ajouter Description </span>:
+                                    <p class="add-text"><textarea matInput formControlName="Description" placeholder="Description" autocomplete="off"></textarea></p>
+                                </div>
+                                <div>
+                                    <span class="font-medium"> Ajouter le nom du Sous Categorie </span>:
+                                    <p class="add-text">
+                                        <mat-select matNativeControl formControlName="IdScat" placeholder="Sous categorie List">
+                                            <mat-option *ngFor="let souscategorie of souscategories" [value]="souscategorie.IdScat">{{ souscategorie.NsousCategorie }}</mat-option>
+
+                                        </mat-select>
+                                    </p>
+                                </div>
+                                <div class="mb-5 detail-btns">
+                                    <button mat-raised-button color="accent" class="button-lg mr-3" (click)="OnSubmit()">Modifier</button>
+                                    <button class="button-lg" (click)="getProductData()" mat-raised-button>Annuler</button>
+                                </div>
+                            </div>
+                            <!-- product-detail-content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- product-detail-page -->
+</form>

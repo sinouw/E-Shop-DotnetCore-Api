@@ -1,0 +1,76 @@
+<ng-container *ngIf="Product">
+    <ng-container *ngIf="Product">
+        <embryo-PageTitle heading="{{Product.NomProduit}}"></embryo-PageTitle>
+        <div class="inner-container">
+            <div class="product-detail-page">
+                <div class="bg-grey section-gap">
+                    <div class="container">
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <div class="row">
+                            <div class="col-6">
+                                <img width="300" height="300" mat-card-image src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" alt="Photo of a Shiba Inu">
+
+                            </div>
+                            <div class="col-6">
+                                <div>
+                                    <a class="primary-color font-medium" href="javascript:void(0)" routerLink="/products">Retour vers produits</a>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <span class="font-medium"> Nom du produit </span>: {{Product?.NomProduit}}
+                                    <br/>
+                                    <span class="font-medium"> prix </span>:{{Product?.Prix}}
+                                    <br/>
+
+                                    <span class="font-medium">  remise </span>:{{Product?.Remise}}
+                                    <br/>
+                                    <span class="font-medium">  Marque </span>:{{Product?.Marque}}
+                                    <br/>
+
+                                    <span class="font-medium">  Disponibilité </span>:{{Product?.Disponible}}
+                                    <br/>
+
+
+                                    <span class="font-medium"> Couleur </span>:{{Product?.Couleur}}
+                                    <br/>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+                        <!-- hello world -->
+
+
+
+
+
+                        <div class="block-title text-center gap">
+                            <h2>You Might Also Like</h2>
+                        </div>
+                        <embryo-ProductGrid [currency]="embryoService?.currency" [products]="productsList" gridLength="4" (addToCart)="addToCart($event)" (addToWishList)="addToWishList($event)"></embryo-ProductGrid>
+                        <div class="text-center mt-4">
+                            <!-- <button mat-raised-button [routerLink]="['/products', Product.NsousCategorie]">Show All</button> -->
+                            <button mat-raised-button>Show All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>

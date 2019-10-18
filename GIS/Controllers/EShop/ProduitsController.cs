@@ -43,7 +43,9 @@ namespace WebAPI.Controllers.EShop
                 s.CreationDate,
                 s.IdScat,
                 NsousCategorie = s.SousCategorie.NsousCategorie,
-                s.Images
+                FrontImg=s.Images.FirstOrDefault<Image>().ImageName,
+                s.Images,
+                s.Caracteristiques
             });
 
             return Ok(prods);
@@ -54,14 +56,30 @@ namespace WebAPI.Controllers.EShop
         [EnableQuery]
         public async Task<ActionResult<Produit>> GetProduit(Guid id)
         {
-            var produit = await _context.Produits.Include(p => p.Caracteristiques).Include(p=>p.Images).SingleOrDefaultAsync(p=>p.IdProd==id);
+            //var produit = await _context.Produits.Include(p => p.Caracteristiques).Include(p=>p.Images).SingleOrDefaultAsync(p=>p.IdProd==id);
+            var produit = await _context.Produits.Select(s => new {
+                s.IdProd,
+                s.NomProduit,
+                s.Description,
+                s.Prix,
+                s.Disponible,
+                s.Remise,
+                s.Couleur,
+                s.Marque,
+                s.CreationDate,
+                s.IdScat,
+                NsousCategorie = s.SousCategorie.NsousCategorie,
+                s.Images,
+                FrontImg=s.Images.First<Image>().ImageName,
+                s.Caracteristiques
+            }).SingleOrDefaultAsync(p=>p.IdProd==id);
 
             if (produit == null)
             {
                 return NotFound();
             }
 
-            return produit;
+            return Ok(produit);
         }
 
         // PUT: api/Produits/5

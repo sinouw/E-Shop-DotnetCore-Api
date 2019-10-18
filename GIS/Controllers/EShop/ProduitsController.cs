@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData;
@@ -42,6 +43,7 @@ namespace WebAPI.Controllers.EShop
                 s.CreationDate,
                 s.IdScat,
                 NsousCategorie = s.SousCategorie.NsousCategorie,
+                s.Images
             });
 
             return Ok(prods);
@@ -52,7 +54,7 @@ namespace WebAPI.Controllers.EShop
         [EnableQuery]
         public async Task<ActionResult<Produit>> GetProduit(Guid id)
         {
-            var produit = await _context.Produits.Include(p => p.Caracteristiques).SingleOrDefaultAsync(p=>p.IdProd==id);
+            var produit = await _context.Produits.Include(p => p.Caracteristiques).Include(p=>p.Images).SingleOrDefaultAsync(p=>p.IdProd==id);
 
             if (produit == null)
             {

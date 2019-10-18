@@ -29,6 +29,15 @@ namespace WebAPI.Controllers.Eshop
             return await _context.Images.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        //Get : api/images/id
+        public async Task<ICollection<Image>> GetByProdId(Guid id)
+        {
+            var prod = await _context.Produits.FindAsync(id);
+
+            return prod.Images.ToList();
+        }
+
 
         //Post : api/images/produit/id
         [HttpPost("produit/{id}")]
@@ -37,7 +46,7 @@ namespace WebAPI.Controllers.Eshop
             try
             {
                 var file = Request.Form.Files[0];
-                string path = "Uploads/" + id;
+                string path = "wwwroot/uploads/" + id;
                 string fullPath = "";
                 if (!Directory.Exists(path))
                 {

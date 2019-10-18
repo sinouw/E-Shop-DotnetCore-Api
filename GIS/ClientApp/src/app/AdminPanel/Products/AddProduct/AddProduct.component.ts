@@ -61,7 +61,6 @@ export class AddProductComponent implements OnInit {
     }
 
     onSubmit() {
-        // console.log(this.form.value);
         this.AddProduct();
 
     }
@@ -111,7 +110,9 @@ export class AddProductComponent implements OnInit {
         this.genericservice.postProductImages(this.productImages, id)
             .then(res => {
                 console.log(res);
-            });
+            },
+            err=>console.log(err)
+            );
     }
 
     UploadImage(files) {

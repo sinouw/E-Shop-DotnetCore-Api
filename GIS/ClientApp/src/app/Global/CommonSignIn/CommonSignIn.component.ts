@@ -33,7 +33,7 @@ export class CommonSignInComponent implements OnInit {
         if(role == "SuperAdmin")
         this.router.navigateByUrl('/admin-panel/account/profile');
         if(role =="Admin")
-        this.router.navigateByUrl('/account/profile');
+        this.router.navigateByUrl('/admin-panel/account/profile');
         this.embryoService.connected=true;
 
       },

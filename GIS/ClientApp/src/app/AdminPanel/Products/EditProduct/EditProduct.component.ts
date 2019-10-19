@@ -114,6 +114,10 @@ export class EditProductComponent implements OnInit {
         this.productImages=[]
         this.productImages.forEach(e => {
             this.productImages.push(this.data[0].image_gallery)
+            // helloworld
+            // helloworld
+            // helloworld
+            // helloworld
         });
         // this.productImages.push(this.data[0].image_gallery)
         console.table(this.productImages);

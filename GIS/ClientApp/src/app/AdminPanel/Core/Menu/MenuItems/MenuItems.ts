@@ -15,12 +15,12 @@ export interface Menu {
 }
 
 const MENUITEMS = [
-  {
-    state: 'admin-panel/reports',
-    name: 'Reports',
-    type: 'link',
-    icon: 'poll'
-  },
+  // {
+  //   state: 'admin-panel/reports',
+  //   name: 'Reports',
+  //   type: 'link',
+  //   icon: 'poll'
+  // },
   {
     state: 'admin-panel/categories',
     name: 'Categories',

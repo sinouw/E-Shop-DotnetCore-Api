@@ -70,6 +70,32 @@ namespace WebAPI.Controllers.Eshop
             }
         }
 
+        ////Delete : api/images/produit/idprod/filename
+        //[HttpDelete("produit/{id}/{filename}")]
+        //public async Task<IActionResult> DeleteImage(Guid id,string filename)
+        //{
+        //    string path = "wwwroot/uploads/" + id;
+        //    string fullPath = "";
+            
+
+        //    if (!Directory.Exists(path))
+        //    {
+        //        return BadRequest(new { message = "Le dossier de ce produit n'exist pas" });
+        //    }
+        //    else
+        //    {
+        //        fullPath = Path.Combine(path, filename);
+
+        //        String[] files = Directory.GetFiles(path);
+        //        foreach (var file in files)
+        //        {
+        //            Directory.Delete(path);
+        //        }
+        //    }
+
+
+        //    return Ok();
+        //}
 
     }
 }

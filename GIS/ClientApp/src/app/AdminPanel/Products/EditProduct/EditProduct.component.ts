@@ -4,6 +4,7 @@ import {FormGroup, FormBuilder} from '@angular/forms';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {BaseUrl} from '../../../models/baseurl.data';
 import {AdminGenericService} from '../../Service/AdminGeneric.service';
+import { join } from 'path';
 
 @Component({
     selector: 'app-edit-product',
@@ -38,6 +39,7 @@ export class EditProductComponent implements OnInit {
     
     Images:any=[]
     ImagesPath:any=[]
+    productImages: any = [];
 
     constructor(private adminPanelService: AdminPanelServiceService,
                 public formBuilder: FormBuilder,
@@ -114,10 +116,11 @@ export class EditProductComponent implements OnInit {
     }
 
     OnSubmit() {
-        console.log(this.form.value);
+        // console.log(this.form.value);
 
         this.genericservice.put(BaseUrl + '/Produits/' + this.idProd, this.form.value)
             .subscribe(res => {
+                this.UploadImages(this.form.value.IdProd);
                     console.log(res);
                 },
                 err => {
@@ -134,6 +137,40 @@ export class EditProductComponent implements OnInit {
         document.querySelector('.border-active').classList.remove('border-active');
         this.mainImgPath = imgPath;
         document.getElementById(index + '_img').className += ' border-active';
+       
+        this.delete(imgPath)
+    }
+
+    UploadImage(files) {
+        this.productImages.push(files[0]);
+        console.log(this.productImages);
+        var file: File = files[0];
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+            this.mainImgPath = event.target.result;
+            this.data[0].image_gallery.splice(0, 0, this.mainImgPath);
+        };
+        reader.readAsDataURL(file);
+
+    }
+
+
+    UploadImages(id) {
+        this.genericservice.postProductImages(this.productImages, id)
+            .then(res => {
+                console.log(res);
+            },
+            err=>console.log(err)
+            );
+    }
+
+    delete(filepath){
+        console.log(filepath);
+        filepath=filepath.split("/")
+        console.log(filepath);
+        filepath=filepath.join('/')
+        console.log(filepath);
+        
     }
 
 }

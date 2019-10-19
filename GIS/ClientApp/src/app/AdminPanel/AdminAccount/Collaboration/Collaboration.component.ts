@@ -38,7 +38,9 @@ export class CollaborationComponent implements OnInit {
 
         // this.collaborationData = response;
         this.collaborationData = this.accountService.Users;
-        this.dataSource = new MatTableDataSource<any>(this.collaborationData);
+        setTimeout(() => {
+            this.dataSource = new MatTableDataSource<any>(this.collaborationData);
+        }, 2000);
     }
 
     /**

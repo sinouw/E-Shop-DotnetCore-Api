@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+   
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -70,32 +71,26 @@ namespace WebAPI.Controllers.Eshop
             }
         }
 
-        ////Delete : api/images/produit/idprod/filename
-        //[HttpDelete("produit/{id}/{filename}")]
-        //public async Task<IActionResult> DeleteImage(Guid id,string filename)
-        //{
-        //    string path = "wwwroot/uploads/" + id;
-        //    string fullPath = "";
-            
+        //Delete : api/images/produit/idprod/filename
+        //[HttpGet("produit/{id}/{filename}")]
+        [HttpGet("produit/{id}/")]
+        public IActionResult DeleteImage(Guid id, string filename)
+        {
+            string path = "wwwroot/uploads/" + id;
+            string fullPath = "";
 
-        //    if (!Directory.Exists(path))
-        //    {
-        //        return BadRequest(new { message = "Le dossier de ce produit n'exist pas" });
-        //    }
-        //    else
-        //    {
-        //        fullPath = Path.Combine(path, filename);
-
-        //        String[] files = Directory.GetFiles(path);
-        //        foreach (var file in files)
-        //        {
-        //            Directory.Delete(path);
-        //        }
-        //    }
+            var prod = _context.Produits.Find(id);
+            if (prod==null)
+            {
+                return BadRequest(new { message = "Le dossier de ce produit n'exist pas" });
+            }
 
 
-        //    return Ok();
-        //}
+           
+
+
+            return Ok(filename);
+        }
 
     }
 }

@@ -11,7 +11,7 @@ export class LanguageDropDownComponent implements OnInit {
    @Input() selectedValue : any;
    @Output() selectedLanguage : EventEmitter<any> = new EventEmitter();
 
-   currentLang = 'en';
+   currentLang = 'fr';
 
    langArray = [
       {

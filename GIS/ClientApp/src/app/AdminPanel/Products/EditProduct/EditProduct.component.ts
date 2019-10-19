@@ -36,7 +36,7 @@ export class EditProductComponent implements OnInit {
     colorsArray: string[] = ['Red', 'Blue', 'Yellow', 'Green'];
     sizeArray: number[] = [36, 38, 40, 42, 44, 46, 48];
     quantityArray: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    
+    imagenumber
     Images:any=[]
     ImagesPath:any=[]
     productImages: any = [];
@@ -64,22 +64,22 @@ export class EditProductComponent implements OnInit {
         });
 
         this.idProd = this.route.snapshot.paramMap.get('id');
+       
         this.getProduct(this.idProd)
             .subscribe(res => {
                 this.product = res;
                 this.Images=res.Images
                 this.getProductData();
-                console.log(this.product);
 
                 this.Images.forEach(e => {
                     this.ImagesPath.push(e.ImageName)
                 });
-                this.mainImgPath=this.ImagesPath[0]
-                console.log(this.ImagesPath);
-                
-                // console.log(this.editProductDetail.image_gallery);
+                this.imagenumber = this.ImagesPath.length
+                this.mainImgPath=this.ImagesPath[this.imagenumber - 1]
+                console.info("this images path : ",this.ImagesPath);                
                 this.data[0].image_gallery=this.ImagesPath
-                console.log(this.data[0].image_gallery)
+  
+                
                 
             });
     }
@@ -97,8 +97,27 @@ export class EditProductComponent implements OnInit {
             Couleur: this.product.Couleur,
             Marque: this.product.Marque,
             IdProd: this.idProd
-
         });
+        
+        this.mainImgPath=this.data[0].image_gallery[this.data[0].image_gallery.length - 1]
+       
+        for (let i = this.data[0].image_gallery.length ; i > this.imagenumber ; i--) {
+            this.data[0].image_gallery.splice(0,1)
+        }  
+
+        // our biggest problem----------------------------------------------------------------
+        // our biggest problem----------------------------------------------------------------
+        // our biggest problem----------------------------------------------------------------
+        // our biggest problem----------------------------------------------------------------
+        // our biggest problem----------------------------------------------------------------
+
+        this.productImages=[]
+        this.productImages.push(this.data[0].image_gallery)
+        console.table(this.productImages);
+
+
+
+        
     }
 
     getProduct(id): any {
@@ -143,7 +162,7 @@ export class EditProductComponent implements OnInit {
 
     UploadImage(files) {
         this.productImages.push(files[0]);
-        console.log(this.productImages);
+        console.log("thisproduct image : ",this.productImages);
         var file: File = files[0];
         var reader = new FileReader();
         reader.onload = (event: any) => {
@@ -165,11 +184,7 @@ export class EditProductComponent implements OnInit {
     }
 
     delete(filepath){
-        console.log(filepath);
-        filepath=filepath.split("/")
-        console.log(filepath);
-        filepath=filepath.join('/')
-        console.log(filepath);
+       
         
     }
 

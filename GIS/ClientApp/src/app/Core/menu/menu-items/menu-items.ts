@@ -37,38 +37,38 @@ const HeaderOneItems = [
         //   }
         // ]
     },
-    {
-        state: '',
-        name: 'SHOP',
-        type: 'sub',
-        icon: 'pages',
-        children: [
-            {
-                state: 'products/men/4',
-                name: 'PRODUCT DETAILS',
-                type: 'link',
-                icon: 'arrow_right_alt'
-            },
-            {
-                state: 'cart',
-                name: 'CART',
-                type: 'link',
-                icon: 'arrow_right_alt'
-            },
-            {
-                state: 'checkout',
-                name: 'CHECKOUT',
-                type: 'link',
-                icon: 'arrow_right_alt'
-            },
-            {
-                state: 'checkout/payment',
-                name: 'PAYMENT',
-                type: 'link',
-                icon: 'arrow_right_alt'
-            }
-        ]
-    },
+    // {
+    //     state: '',
+    //     name: 'SHOP',
+    //     type: 'sub',
+    //     icon: 'pages',
+    //     children: [
+    //         {
+    //             state: 'products/men/4',
+    //             name: 'PRODUCT DETAILS',
+    //             type: 'link',
+    //             icon: 'arrow_right_alt'
+    //         },
+    //         {
+    //             state: 'cart',
+    //             name: 'CART',
+    //             type: 'link',
+    //             icon: 'arrow_right_alt'
+    //         },
+    //         {
+    //             state: 'checkout',
+    //             name: 'CHECKOUT',
+    //             type: 'link',
+    //             icon: 'arrow_right_alt'
+    //         },
+    //         {
+    //             state: 'checkout/payment',
+    //             name: 'PAYMENT',
+    //             type: 'link',
+    //             icon: 'arrow_right_alt'
+    //         }
+    //     ]
+    // },
 
 
     {

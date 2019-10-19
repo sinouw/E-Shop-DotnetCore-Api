@@ -16,7 +16,22 @@
                                                     <a id="{{i}}_img" class="p-link" [ngClass]="{ 'border-active': i === 0 }" href="javascript:void(0)" (mouseenter)="getImagePath(img, i)">
                                                         <img [src]="img" alt="" width="400" height="400">
                                                     </a>
-                                                    <!-- <button class="add-btn" md-mini-fab type="button" *ngIf="img == 'https://via.placeholder.com/625x800'"> -->
+                                                    <button class="add-btn" md-mini-fab type="button" *ngIf="img == 'https://via.placeholder.com/625x800'">
+                                                                <label for="fileToUpload">
+                                                                    <mat-icon >add</mat-icon>
+                                                                </label>
+                                                            </button>
+                                                    <!-- add-btn -->
+                                                    <input mat id="fileToUpload" type="file" accept="image/*" style="display:none;" (change)="UploadImage($event.target.files)">
+                                                </div>
+
+                                            </mat-grid-tile>
+
+                                            <mat-grid-tile>
+                                                <div class="product-image-gallery-item add-icon">
+                                                    <a class="p-link" href="javascript:void(0)">
+                                                        <img src="https://via.placeholder.com/625x800" alt="" width="400" height="400">
+                                                    </a>
                                                     <button class="add-btn" md-mini-fab type="button">
                                                                 <label for="fileToUpload">
                                                                     <mat-icon >add</mat-icon>

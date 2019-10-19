@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.OData;
@@ -135,6 +136,10 @@ namespace WebAPI.Controllers.EShop
             }
 
             _context.Produits.Remove(produit);
+            string path = "wwwroot/uploads/" + id;
+            Directory.Delete(path, true);
+
+
             await _context.SaveChangesAsync();
 
             return produit;

@@ -120,7 +120,7 @@ namespace GIS
             app.UseHttpsRedirection();
             app.UseMvc(routerBuilder => {
                 routerBuilder.EnableDependencyInjection();
-                routerBuilder.Expand().Select().Count().OrderBy().Filter();
+                routerBuilder.Expand().Select().Count().OrderBy().Filter().MaxTop(null);
             });
 
             app.UseSpa(spa =>

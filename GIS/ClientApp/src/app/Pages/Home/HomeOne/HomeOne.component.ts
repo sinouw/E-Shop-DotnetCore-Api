@@ -2,7 +2,11 @@ import { Component, OnInit, AfterViewChecked} from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material';
 import { ChangeDetectorRef } from '@angular/core';
 
+
+
 import { EmbryoService } from '../../../Services/Embryo.service';
+import { AdminGenericService } from 'src/app/AdminPanel/Service/AdminGeneric.service';
+import { BaseUrl } from 'src/app/models/baseurl.data';
 
 @Component({
   selector: 'app-homeone',
@@ -11,6 +15,8 @@ import { EmbryoService } from '../../../Services/Embryo.service';
 })
 export class HomeoneComponent implements OnInit, AfterViewChecked{
 
+   Products: any[] = [];
+   sousCategories: any[] = [];
    blogList              : any;
    productReviews        : any;
    productsArray         : any;
@@ -49,7 +55,8 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
          }
       ]
    };
-
+  
+  
    rtlSlideConfig = {
       slidesToShow: 4,
       slidesToScroll:4,
@@ -86,7 +93,8 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
    };
 
    constructor(public embryoService: EmbryoService,
-               private cdRef : ChangeDetectorRef) {
+               private cdRef : ChangeDetectorRef,
+               private genericservice : AdminGenericService) {
       this.getFeaturedProducts();
       this.getBlogList();
       this.getProductRevies();
@@ -96,6 +104,26 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
    }
 
    ngOnInit() {
+
+      this.listsousCategories().subscribe(res=>{
+         this.sousCategories=res
+            console.log(this.sousCategories);
+            
+         },
+         err=>{
+            console.log(err);
+         })
+
+
+      this.listProduit().subscribe(res=>{
+         this.Products=res
+            console.log(this.Products);
+         },
+         err=>{
+            console.log(err);
+         })
+      
+
    }
 
    ngAfterViewChecked() : void {
@@ -130,7 +158,7 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
          break;
 
          case 1:
-            this.productsSliderData = this.productsArray.women;
+            this.productsSliderData = this.Products;
          break;
 
          case 2:
@@ -175,4 +203,12 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
 
       return true;
    }
+
+   listProduit(){
+		return this.genericservice.get(BaseUrl+'/Produits?$orderby=CreationDate desc &$top=10')
+   }
+   
+   listsousCategories(){
+		return this.genericservice.get(BaseUrl+'/souscategories?$top=2')
+	}
 }

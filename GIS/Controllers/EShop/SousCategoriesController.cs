@@ -27,9 +27,22 @@ namespace WebAPI.Controllers.EShop
         // GET: api/SousCategories
         [HttpGet]
         [EnableQuery]
-        public async Task<ActionResult<IEnumerable<SousCategorie>>> GetSousCategories()
+        public  ActionResult<IQueryable<SousCategorie>> GetSousCategories()
         {
-            return await _context.SousCategories.Include( sc => sc.Categorie ).ToListAsync();
+            //return await _context.SousCategories.Include(sc=>sc.Produits).Include( sc => sc.Categorie ).ToListAsync();
+            var souscates =  _context.SousCategories.Select(s => new
+            {
+               s.IdScat,
+               s.NsousCategorie,
+               Ncategorie = s.Categorie.Ncategorie,
+               s.CreationDate,
+               s.UserId,
+                //s.Categorie,
+                Products = s.Produits
+
+            });
+
+            return Ok(souscates);
         }
 
         // GET: api/SousCategories/5

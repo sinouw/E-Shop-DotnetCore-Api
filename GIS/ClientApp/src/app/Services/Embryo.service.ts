@@ -23,7 +23,7 @@ export class EmbryoService {
    newArrivalSelectedTab       : any = 0;
    
    /**** Get currency code:- https://en.wikipedia.org/wiki/ISO_4217 *****/
-   currency  : string = 'USD';
+   currency  : string = 'TND';
    language  : string = 'en';     
 
    shipping  : number = 12.95;

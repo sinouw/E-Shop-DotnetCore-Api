@@ -112,7 +112,14 @@ export class EditProductComponent implements OnInit {
         // our biggest problem----------------------------------------------------------------
 
         this.productImages=[]
-        this.productImages.push(this.data[0].image_gallery)
+        this.productImages.forEach(e => {
+            this.productImages.push(this.data[0].image_gallery)
+            // helloworld
+            // helloworld
+            // helloworld
+            // helloworld
+        });
+        // this.productImages.push(this.data[0].image_gallery)
         console.table(this.productImages);
 
 
@@ -157,7 +164,6 @@ export class EditProductComponent implements OnInit {
         this.mainImgPath = imgPath;
         document.getElementById(index + '_img').className += ' border-active';
        
-        this.delete(imgPath)
     }
 
     UploadImage(files) {
@@ -183,9 +189,6 @@ export class EditProductComponent implements OnInit {
             );
     }
 
-    delete(filepath){
-       
-        
-    }
+
 
 }

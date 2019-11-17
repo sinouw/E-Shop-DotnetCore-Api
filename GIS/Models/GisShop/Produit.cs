@@ -39,5 +39,6 @@ namespace WebAPI.Models.ZahraShop
 
         //Images List
         public ICollection<Image> Images { get; set; }
+        public string FrontImg { get; set; }
     }
 }

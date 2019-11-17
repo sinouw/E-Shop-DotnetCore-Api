@@ -44,7 +44,8 @@ namespace WebAPI.Controllers.EShop
                 s.CreationDate,
                 s.IdScat,
                 NsousCategorie = s.SousCategorie.NsousCategorie,
-                FrontImg=s.Images.FirstOrDefault<Image>().ImageName,
+                //FrontImg = s.Images.FirstOrDefault<Image>().ImageName,
+                FrontImg = s.FrontImg,
                 s.Images,
                 s.Caracteristiques
             });
@@ -71,7 +72,8 @@ namespace WebAPI.Controllers.EShop
                 s.IdScat,
                 NsousCategorie = s.SousCategorie.NsousCategorie,
                 s.Images,
-                FrontImg=s.Images.First<Image>().ImageName,
+                //FrontImg=s.Images.First<Image>().ImageName,
+                FrontImg = s.FrontImg,
                 s.Caracteristiques
             }).SingleOrDefaultAsync(p=>p.IdProd==id);
 
@@ -93,8 +95,8 @@ namespace WebAPI.Controllers.EShop
             }
 
 
+            
             _context.Entry(produit).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -118,7 +120,7 @@ namespace WebAPI.Controllers.EShop
         [HttpPost]
         public async Task<ActionResult<Produit>> PostProduit(Produit produit)
         {
-
+            
             _context.Produits.Add(produit);
             await _context.SaveChangesAsync();
 
@@ -149,5 +151,7 @@ namespace WebAPI.Controllers.EShop
         {
             return _context.Produits.Any(e => e.IdProd == id);
         }
+        
+
     }
 }

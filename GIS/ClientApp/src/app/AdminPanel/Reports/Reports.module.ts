@@ -11,9 +11,21 @@ import { MatIconModule,
 			MatMenuModule,
 			MatDividerModule,
 			MatTabsModule,
-			MatChipsModule} from '@angular/material';
+			MatChipsModule,
+			MatPaginatorModule,
+			MatSortModule,
+			MatGridListModule,
+			MatSidenavModule,
+			MatCheckboxModule,
+			MatSelectModule,
+			MatOptionModule,
+			MatFormFieldModule,
+			MatInputModule,
+			MatListModule} from '@angular/material';
 import { WidgetModule } from '../Widget/Widget.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { GlobalModule } from 'src/app/Global/Global.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
 	declarations: [ReportsComponent],
@@ -21,16 +33,32 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 		CommonModule,
 		RouterModule.forChild(ReportsRoutes),
 		TranslateModule,
-		MatCardModule,
 		MatIconModule,
-		MatButtonModule,
 		MatTableModule,
-		MatMenuModule,
 		MatDividerModule,
 		WidgetModule,
 		MatTabsModule,
       MatChipsModule,
-      FlexLayoutModule
+	  TranslateModule,
+      MatPaginatorModule,
+      MatSortModule,
+      MatGridListModule,
+      GlobalModule,
+      FormsModule,
+	  ReactiveFormsModule,
+	  FlexLayoutModule,
+      MatSidenavModule,
+      MatIconModule,	      
+		MatCheckboxModule,
+      MatButtonModule,
+      MatSelectModule,
+      MatCardModule,
+      MatMenuModule,
+      MatOptionModule,
+      MatFormFieldModule,
+      MatInputModule,
+      MatDividerModule,
+      MatListModule, 
 	]
 })
 export class ReportsModule { }

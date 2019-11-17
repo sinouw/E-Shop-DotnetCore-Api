@@ -4,6 +4,7 @@ using System.IO;
    
 using System.Linq;
 using System.Threading.Tasks;
+using GIS.Models.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,15 @@ namespace WebAPI.Controllers.Eshop
                 _context.Images.Add(new Image() { ImageName = "Uploads/" + id + "/" + file.FileName, ProduitId = id });
                 await _context.SaveChangesAsync();
 
+                var prod = await _context.Produits.FindAsync(id);
+                prod.FrontImg = prod.Images.FirstOrDefault<Image>().ImageName;
+                _context.Entry(prod).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+
+
+              
+
                 return Ok(_context);
             }
             catch (Exception e)
@@ -72,8 +82,7 @@ namespace WebAPI.Controllers.Eshop
         }
 
         //Delete : api/images/produit/idprod/filename
-        //[HttpGet("produit/{id}/{filename}")]
-        [HttpGet("produit/{id}/")]
+        [HttpDelete("produit/{id}/")]
         public IActionResult DeleteImage(Guid id, string filename)
         {
             string path = "wwwroot/uploads/" + id;
@@ -84,12 +93,52 @@ namespace WebAPI.Controllers.Eshop
             {
                 return BadRequest(new { message = "Le dossier de ce produit n'exist pas" });
             }
-
-
-           
-
-
             return Ok(filename);
+        }
+
+        //Put : api/images/produit/FrontImg/id
+        //[HttpPost("produit/FrontImg/{id}")]
+        [HttpPut("produit/FrontImg/{id}")]
+        public async Task<IActionResult> EditFrontImage(Guid id,GenericStringDTO GenericDTO)
+        {
+            var prod = await _context.Produits.FindAsync(id);
+            if (prod.Images == null) {
+                return StatusCode(400);
+            }
+            var image = _context.Images.SingleOrDefault(i => i.IdImage == GenericDTO.GenericGuid);
+            if (image!= null)
+            {
+                prod.FrontImg = image.ImageName;
+                _context.Entry(prod).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok(prod.FrontImg);
+            }
+            return StatusCode(400);
+
+        }
+
+
+        //Put : api/images/produit/updateFrontImg/id
+        [HttpPut("produit/updateFrontImg/{id}")]
+        public async Task<IActionResult> AfterPostFrontImage(Guid id)
+        {
+            var prod = await _context.Produits.FindAsync(id);
+            if (prod.Images == null)
+            {
+                return StatusCode(400);
+            }
+            var image = prod.Images.FirstOrDefault<Image>();
+            if (image != null)
+            {
+                prod.FrontImg = image.ImageName;
+                _context.Entry(prod).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return Ok(prod.FrontImg);
+            }
+            return StatusCode(400);
+
         }
 
     }

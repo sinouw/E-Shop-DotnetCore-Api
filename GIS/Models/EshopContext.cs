@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Models.ZahraShop;
 using WebAPI.Models.GisShop;
+using GIS.Models.GisShop;
 
 namespace WebAPI.Models
 {
@@ -65,5 +66,6 @@ namespace WebAPI.Models
         public DbSet<Image> Images { get; set; }
         public DbSet<Produit> Produits { get; set; }
         public DbSet<Caracteristique> Caracteristique { get; set; }
+        public DbSet<Pub> PubsImages { get; set; }
     }
 }

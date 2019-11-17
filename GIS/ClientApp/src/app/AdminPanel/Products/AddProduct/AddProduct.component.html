@@ -28,7 +28,7 @@
                                     <!-- product-detail-image-gallery -->
                                 </div>
                                 <div fxFlex.xs="85" fxFlex.sm="85" fxFlex.md="85" fxFlex.lg="85" fxFlex.xl="85" class="relative" *ngIf="mainImgPath">
-    
+
                                     <embryo-ImgZoom [imgSrc]="mainImgPath" imgStyle="width:auto; height:auto;" resultStyle="background-repeat: no-repeat; z-index: 2; position:absolute;
                               -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
                               box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); top: 0;left: 100%;" lensStyle="width:100px; height:100px" containerStyle="">
@@ -45,21 +45,32 @@
                                 <br />
                                 <br />
 
+
+
+
                                 <span class="font-medium"> Ajouter le nom du produit </span>:
-                                <h3 class="add-text"><input matInput formControlName="NomProduit" type="text" placeholder="product Name" autocomplete="off"></h3>
+                                <h3 class="add-text">
+                                    <input matInput formControlName="NomProduit" type="text" placeholder="product Name" autocomplete="off"></h3>
+                                <div *ngIf="form.get('NomProduit').hasError('required') && form.get('NomProduit').touched">Ce champ ne doit pas être vide.</div>
+
+
                                 <span class="font-medium"> Ajouter le prix </span>:
                                 <div class="product-detail-price">
                                     <h4 class="accent-color add-text"><input matInput type="number" formControlName="Prix" placeholder="Prix" autocomplete="off"></h4>
+                                    <div *ngIf="form.get('Prix').hasError('required') && form.get('Prix').touched">Ce champ ne doit pas être vide.</div>
+
                                 </div>
 
-                                <span class="font-medium"> Ajouter la remise </span>:
+                                <!-- <span class="font-medium"> Ajouter la remise </span>:
                                 <div class="product-detail-price">
                                     <h5 class="accent-color add-text"><input matInput type="number" formControlName="Remise" placeholder="Remise" autocomplete="off"></h5>
-                                </div>
+                                </div> -->
 
                                 <span class="font-medium"> Ajouter la Marque </span>:
                                 <div class="product-detail-price">
                                     <h5 class="primary-color add-text"><input matInput formControlName="Marque" placeholder="Marque" autocomplete="off"></h5>
+                                    <div *ngIf="form.get('Marque').hasError('required') && form.get('Marque').touched">Ce champ ne doit pas être vide.</div>
+
                                 </div>
 
                                 <div class="no-style mb-4">
@@ -67,10 +78,12 @@
                                     <div class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
 
                                         <mat-select class="ml-2" matNativeControl formControlName="Disponible" placeholder="Disponibilité" type="text" autocomplete="off">
+
                                             <mat-option value="true">Yes</mat-option>
                                             <mat-option value="false">No</mat-option>
                                         </mat-select>
                                     </div>
+                                    <div *ngIf="form.get('Disponible').hasError('required') && form.get('Disponible').touched">Ce champ ne doit pas être vide.</div>
 
                                 </div>
                                 <div class="no-style mb-4">
@@ -78,6 +91,7 @@
                                     <div class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
 
                                         <mat-select class="ml-2" matNativeControl formControlName="Couleur" type="text" placeholder="Color" autocomplete="off">
+
                                             <mat-option value="Blanc">Blanc</mat-option>
                                             <mat-option value="Noir">Noir</mat-option>
                                             <mat-option value="Doré">Doré</mat-option>
@@ -91,12 +105,16 @@
                                             <mat-option value="Marron">Marron</mat-option>
                                             <mat-option value="Violet">Violet</mat-option>
                                         </mat-select>
+                                        <div *ngIf="form.get('Couleur').hasError('required') && form.get('Couleur').touched">Ce champ ne doit pas être vide.</div>
+
                                     </div>
 
                                 </div>
                                 <div class="short-des">
                                     <span class="font-medium"> Ajouter Description </span>:
                                     <p class="add-text"><textarea matInput formControlName="Description" placeholder="Description" autocomplete="off"></textarea></p>
+                                    <div *ngIf="form.get('Description').hasError('required') && form.get('Description').touched">Ce champ ne doit pas être vide.</div>
+
                                 </div>
                                 <div>
                                     <span class="font-medium"> Ajouter le nom du Sous Categorie </span>:
@@ -105,10 +123,12 @@
                                             <mat-option *ngFor="let souscategorie of souscategories" [value]="souscategorie.IdScat">{{ souscategorie.NsousCategorie }}</mat-option>
 
                                         </mat-select>
+
                                     </p>
                                 </div>
+                                <div *ngIf="form.get('IdScat').hasError('required') && form.get('IdScat').touched">Ce champ ne doit pas être vide.</div>
                                 <div class="mb-5 detail-btns">
-                                    <button mat-raised-button color="accent" class="button-lg mr-3" (click)="onSubmit()">Creer</button>
+                                    <button mat-raised-button color="accent" class="button-lg mr-3" [disabled]="form.invalid || addProductBtnDisa" (click)="onSubmit()">Creer</button>
                                     <button class="button-lg" (click)="Discard()" mat-raised-button>Annuler</button>
                                 </div>
                             </div>

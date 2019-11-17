@@ -23,7 +23,7 @@ export class EditProductComponent implements OnInit {
             ]
         }
     ];
-
+    idImageDis = true
     souscategories: any[] = [];
     product: any;
     idProd;
@@ -40,6 +40,9 @@ export class EditProductComponent implements OnInit {
     Images:any=[]
     ImagesPath:any=[]
     productImages: any = [];
+    frontImg: string;
+    Imagefront: any;
+    DefaultFrontImgId: any;
 
     constructor(private adminPanelService: AdminPanelServiceService,
                 public formBuilder: FormBuilder,
@@ -68,16 +71,22 @@ export class EditProductComponent implements OnInit {
         this.getProduct(this.idProd)
             .subscribe(res => {
                 this.product = res;
+                console.log(res)
                 this.Images=res.Images
+                
                 this.getProductData();
 
                 this.Images.forEach(e => {
                     this.ImagesPath.push(e.ImageName)
                 });
                 this.imagenumber = this.ImagesPath.length
-                this.mainImgPath=this.ImagesPath[this.imagenumber - 1]
+                this.mainImgPath=this.product.FrontImg
+                // this.mainImgPath=this.ImagesPath[this.imagenumber - 1]
+               
+                
                 console.info("this images path : ",this.ImagesPath);                
                 this.data[0].image_gallery=this.ImagesPath
+
   
                 
                 
@@ -99,7 +108,7 @@ export class EditProductComponent implements OnInit {
             IdProd: this.idProd
         });
         
-        this.mainImgPath=this.data[0].image_gallery[this.data[0].image_gallery.length - 1]
+        // this.mainImgPath=this.data[0].image_gallery[this.data[0].image_gallery.length - 1]
        
         for (let i = this.data[0].image_gallery.length ; i > this.imagenumber ; i--) {
             this.data[0].image_gallery.splice(0,1)
@@ -147,6 +156,7 @@ export class EditProductComponent implements OnInit {
         this.genericservice.put(BaseUrl + '/Produits/' + this.idProd, this.form.value)
             .subscribe(res => {
                 this.UploadImages(this.form.value.IdProd);
+                this.editFrontImg()
                     console.log(res);
                 },
                 err => {
@@ -159,7 +169,15 @@ export class EditProductComponent implements OnInit {
      * getImagePath is used to change the image path on click event.
      */
     public getImagePath(imgPath: string, index: number) {
-        // console.log(imgPath,index);
+
+        if(imgPath==this.mainImgPath){
+            this.idImageDis=false
+        }else{
+            this.idImageDis = false
+
+        }
+        //  console.log(imgPath,index);
+        this.frontImg = imgPath;
         document.querySelector('.border-active').classList.remove('border-active');
         this.mainImgPath = imgPath;
         document.getElementById(index + '_img').className += ' border-active';
@@ -189,6 +207,54 @@ export class EditProductComponent implements OnInit {
             );
     }
 
+
+    editFrontImg(){
+        let body
+        this.DefaultFrontImgId = this.product.Images.find(x=>x.ImageName==this.mainImgPath)
+         this.Imagefront= this.product.Images.find(x=>x.ImageName==this.frontImg)
+        
+         if(this.Imagefront){
+            // this.Imagefront=this.Imagefront.IdImage
+             body = {
+                GenericGuid:this.Imagefront.IdImage,
+                GenericString:"hello"
+            }
+
+            console.log("image front",this.Imagefront);
+            
+        }
+
+        else{
+            body = {
+                GenericGuid:this.DefaultFrontImgId.IdImage,
+                GenericString:"hello"
+            }
+            console.log("image frontc",this.Imagefront);
+        }
+            
+
+
+        // this.genericservice.post(BaseUrl+"/images/produit/FrontImg/"+this.idProd,body)
+        this.genericservice.put(BaseUrl+"/images/produit/FrontImg/"+this.idProd,body)
+        .subscribe(res=>{
+           console.log(res);
+           this.idImageDis = true    
+       },
+       err=>{
+       console.log(err);
+
+       })
+
+
+
+
+
+        console.log(this.Imagefront);
+        
+        
+        
+
+    }
 
 
 }

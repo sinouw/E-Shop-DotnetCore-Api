@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {AdminGenericService} from '../../Service/AdminGeneric.service';
 import {BaseUrl} from '../../../models/baseurl.data';
 import {HttpEventType} from '@angular/common/http';
@@ -12,6 +12,8 @@ import {HttpEventType} from '@angular/common/http';
 
 export class AddProductComponent implements OnInit {
 
+
+    addProductBtnDisa = true
     form: FormGroup;
     mainImgPath: string;
     colorsArray: string[] = ['Red', 'Blue', 'Yellow', 'Green'];
@@ -22,6 +24,7 @@ export class AddProductComponent implements OnInit {
     productImages: any [] = [];
     base64Image: any;
 
+    
     'data': any = [
         {
             'image': 'https://via.placeholder.com/625x800',
@@ -39,14 +42,14 @@ export class AddProductComponent implements OnInit {
         this.getSousCategories();
         this.mainImgPath = this.data[0].image;
         this.form = this.formBuilder.group({
-            NomProduit: [],
-            Prix: [],
-            Disponible: [],
-            Description: [],
-            Remise: [],
-            IdScat: [],
-            Couleur: [],
-            Marque: [],
+            NomProduit: ['', [Validators.required]],
+            Prix: ['', [Validators.required]],
+            Disponible: ['', [Validators.required]],
+            Description: ['', [Validators.required]],
+            Remise: ['', [Validators.required]],
+            IdScat: ['', [Validators.required]],
+            Couleur: ['', [Validators.required]],
+            Marque: ['', [Validators.required]],
         });
     }
 
@@ -76,10 +79,13 @@ export class AddProductComponent implements OnInit {
     }
 
     AddProduct() {
+
+      
         this.genericservice.post(BaseUrl + '/Produits', this.form.value)
             .subscribe(res => {
                     console.log(res);
                     this.UploadImages(res.IdProd);
+                    
                     this.Discard();
                 },
                 err => {
@@ -93,7 +99,7 @@ export class AddProductComponent implements OnInit {
             Prix: [],
             Disponible: [],
             Description: [],
-            Remise: [],
+            Remise: 0,
             IdScat: [],
             Couleur: [],
             Marque: [],
@@ -103,6 +109,8 @@ export class AddProductComponent implements OnInit {
         this.mainImgPath = this.data[0].image;
         this.data[0].image_gallery = []
         this.data[0].image_gallery.splice(0, 0, this.mainImgPath);
+
+        this.addProductBtnDisa = true
  
     }
 
@@ -110,6 +118,7 @@ export class AddProductComponent implements OnInit {
         this.genericservice.postProductImages(this.productImages, id)
             .then(res => {
                 console.log(res);
+                this.UpdateFrontImg(id)
             },
             err=>console.log(err)
             );
@@ -125,6 +134,20 @@ export class AddProductComponent implements OnInit {
             this.data[0].image_gallery.splice(0, 0, this.mainImgPath);
         };
         reader.readAsDataURL(file);
+
+        this.addProductBtnDisa = false
+
+    }
+
+
+    UpdateFrontImg(id){
+        
+        this.genericservice.put(BaseUrl,'/images/produit/updateFrontImg/'+ id)
+        .subscribe(res => {
+            console.log(res);
+        },
+        err=>console.log(err)
+        );
 
     }
 }

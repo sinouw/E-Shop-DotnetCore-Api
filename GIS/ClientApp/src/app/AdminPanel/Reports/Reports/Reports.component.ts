@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AdminPanelServiceService } from '../../Service/AdminPanelService.service';
 import {TimerObservable} from "rxjs/observable/TimerObservable";
+import { AdminGenericService } from '../../Service/AdminGeneric.service';
+import { BaseUrl } from 'src/app/models/baseurl.data';
 
 @Component({
 	selector: 'app-reports',
@@ -20,30 +22,49 @@ export class ReportsComponent implements OnInit {
 
    displayedExpenseColumns : string [] = ['itmNo','date', 'type','companyName','amount','status'];
 	
-   constructor(private service : AdminPanelServiceService) {
+   constructor(private service : AdminPanelServiceService,
+      private genericservice : AdminGenericService) {
    }
 
-   ngOnInit() {
-      this.service.getTableTabContent().valueChanges().subscribe(res => this.tableTabData = res);
-      this.service.getBuySellChartContent().valueChanges().
-            subscribe( res => (this.getChartData(res))
-                     );
 
-   }
-
-   //getChartData method is used to get the chart data.
-   getChartData(data){
-      this.buySellChartContent= data;
-      this.chartDataChange('week');
-   }
-
-   //chartDataChange method is used to change the chart data according to button event.
-   chartDataChange(tag){
-      if(this.buySellChartContent && this.buySellChartContent.length>0)
-      for(var content of this.buySellChartContent){
-         if(content.tag == tag){
-            this.chartData = content;
-         }
+   'data': any = [
+      {
+          'image': 'https://via.placeholder.com/625x800',
+          'image_gallery': [
+              'https://via.placeholder.com/625x800',
+          ]
       }
+  ];
+
+
+   mainImgPath = "Uploads/PubImages/1134mb5-blue-ngpu-nc-wt-nos-p-genmon-septem-genhs-vbbkmat.jpg"
+   ngOnInit() {
+      
+      this.getpubImages()
+
    }
+
+   public getImagePath(imgPath: string, index: number) {
+      //  console.log(imgPath,index);
+
+      document.querySelector('.border-active').classList.remove('border-active');
+      this.mainImgPath = imgPath;
+      document.getElementById(index + '_img').className += ' border-active';
+     
+  }
+
+
+   getpubImages(){
+      this.genericservice.get(BaseUrl+'/PubImages')
+      .subscribe(res=>{
+         console.log(res);
+         
+      },
+      err=>{
+         console.log(err);
+         
+      })
+   }
+
+
 }

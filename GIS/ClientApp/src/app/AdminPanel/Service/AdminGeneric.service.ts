@@ -111,4 +111,19 @@ export class AdminGenericService {
             resolve(true);
         });
     }
+
+    postPubImages(files: any []): Promise<any> {
+        return new Promise((resolve, reject) => {
+            for (const file of files) {
+                const formData = new FormData();
+                formData.append('file', file, file.name);
+                this.http
+                    .post('http://localhost:54277/api/PubImages/' , formData)
+                    .subscribe(event => {
+                        console.log(event);
+                    });
+            }
+            resolve(true);
+        });
+    }
 }

@@ -26,6 +26,7 @@ import { WidgetModule } from '../Widget/Widget.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { GlobalModule } from 'src/app/Global/Global.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 @NgModule({
 	declarations: [ReportsComponent],
@@ -58,7 +59,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       MatFormFieldModule,
       MatInputModule,
       MatDividerModule,
-      MatListModule, 
+	  MatListModule, 
+	  SlickCarouselModule
 	]
 })
 export class ReportsModule { }

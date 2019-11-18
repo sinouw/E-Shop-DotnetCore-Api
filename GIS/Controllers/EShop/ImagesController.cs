@@ -86,7 +86,6 @@ namespace WebAPI.Controllers.Eshop
         public IActionResult DeleteImage(Guid id, string filename)
         {
             string path = "wwwroot/uploads/" + id;
-            string fullPath = "";
 
             var prod = _context.Produits.Find(id);
             if (prod==null)

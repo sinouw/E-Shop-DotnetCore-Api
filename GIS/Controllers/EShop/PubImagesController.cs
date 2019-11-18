@@ -34,12 +34,13 @@ namespace GIS.Controllers.EShop
         [HttpPost]
         public async Task<ActionResult<Pub>> PostPub()
         {
-             Random random = new Random();
-             var s = random.Next(1000, 10000);
+            
+
             try
             {
+                Guid id = Guid.NewGuid();
                 var file = Request.Form.Files[0];
-                string path = "wwwroot/uploads/PubImages";
+                string path = "wwwroot/uploads/PubImages/"+id;
                 string fullPath = "";
                 if (!Directory.Exists(path))
                 {
@@ -48,11 +49,11 @@ namespace GIS.Controllers.EShop
 
                 if (file.Length > 0)
                 {
-                    fullPath = Path.Combine(path, s+file.FileName);
+                    fullPath = Path.Combine(path, file.FileName);
                     var stream = new FileStream(fullPath, FileMode.Create);
                     await file.CopyToAsync(stream);
                 }
-                _context.PubsImages.Add(new Pub() { PubImageName = "Uploads/PubImages/" + s+file.FileName});
+                _context.PubsImages.Add(new Pub() { IdIPubImage= id , PubImageName = "Uploads/PubImages/" +id +"/"+ file.FileName});
                 await _context.SaveChangesAsync();
                 return Ok(_context);
             }
@@ -72,11 +73,26 @@ namespace GIS.Controllers.EShop
                 return NotFound();
             }
 
+            try
+            {
             _context.PubsImages.Remove(pub);
+            string path = "wwwroot/uploads/PubImages/"+id;
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
+                Directory.Delete(path, true);
+
+
             await _context.SaveChangesAsync();
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return pub;
         }
+
+
 
         private bool PubExists(Guid id)
         {

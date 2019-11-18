@@ -24,9 +24,9 @@ export class ReportsComponent implements OnInit {
    displayedTransferColumns : string [] = ['transid','date','account', 'type', 'amount', 'balance','status'];
 
    displayedExpenseColumns : string [] = ['itmNo','date', 'type','companyName','amount','status'];
+   imagenumber: any;
 	
-   constructor(private service : AdminPanelServiceService,
-      private genericservice : AdminGenericService) {
+   constructor(private genericservice : AdminGenericService) {
    }
 
 
@@ -54,6 +54,7 @@ export class ReportsComponent implements OnInit {
          this.DBPubImages.forEach(e => {
             this.ImagesPath.unshift(e.PubImageName)
          });
+         this.imagenumber = this.ImagesPath.length
          this.mainImgPath =this.ImagesPath[0]
          this.data[0].image_gallery=this.ImagesPath
             console.log("gallery images : " ,this.data[0].image_gallery);
@@ -68,15 +69,14 @@ export class ReportsComponent implements OnInit {
 
    public getImagePath(imgPath: string, index: number) {
       //  console.log(imgPath,index);
+            if(imgPath!='https://via.placeholder.com/625x800'){
 
-      if(imgPath!='https://via.placeholder.com/625x800'){
+      console.log(imgPath);
 
-console.log(imgPath);
-
-      document.querySelector('.border-active').classList.remove('border-active');
-      this.mainImgPath = imgPath;
-      document.getElementById(index + '_img').className += ' border-active';
-   }
+            document.querySelector('.border-active').classList.remove('border-active');
+            this.mainImgPath = imgPath;
+            document.getElementById(index + '_img').className += ' border-active';
+         }
      
   }
 
@@ -98,15 +98,17 @@ console.log(imgPath);
 
   }
 
-  DeletePubImage(path="Uploads/PubImages/4706apple-iphone-11-pro-256gb-grey-de.jpg"){
+  DeletePubImage(path="Uploads/PubImages/e7c8728f-6849-496c-a1a2-2c6f84853de3/pub.jpg"){
    let id=null
-   this.DBPubImages.forEach(e => {
-      if(e.PubImageName==path)
-      console.log("hello");
-      id = e.IdIPubImage
-   });
-   if(id!=null)
-   this.DeleteImagesDB(id)
+   
+   if(path!=null)
+   {
+      id =path.split("/")[2]
+      console.log(id);
+      
+      this.DeleteImagesDB(id)
+
+   }
    else
    console.log("notfound");
    
@@ -116,6 +118,7 @@ console.log(imgPath);
    this.genericservice.delete(BaseUrl+'/PubImages/'+id)
    .subscribe(res => {
       console.log(res);
+      // helloworld!!!   
    },
    err=>console.log(err)
    );

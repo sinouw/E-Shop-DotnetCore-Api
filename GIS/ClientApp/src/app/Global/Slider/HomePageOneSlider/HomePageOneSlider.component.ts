@@ -1,4 +1,6 @@
 import { Component, OnInit, Input, OnChanges} from '@angular/core';
+import { AdminGenericService } from 'src/app/AdminPanel/Service/AdminGeneric.service';
+import { BaseUrl } from 'src/app/models/baseurl.data';
 
 @Component({
   selector: 'embryo-HomePageOneSlider',
@@ -10,10 +12,25 @@ export class HomePageOneSliderComponent implements OnInit, OnChanges {
    @Input() isRTL : boolean = false;
 
    slideConfig : any;
+   PubImages: any = [];
+   ImagesPath: any = [];
 
-   constructor() { }
+   constructor(private genericservice : AdminGenericService) { }
 
    ngOnInit() {
+      this.getpubImages()
+      .subscribe(res=>{
+        this.PubImages=res
+        console.log("Pubs Images",this.PubImages);
+
+        this.PubImages.forEach(e => {
+           this.ImagesPath.push(e.PubImageName)
+         });
+     },
+     err=>{
+        console.log(err);
+        
+     })
    }
 
    ngOnChanges() {
@@ -42,5 +59,11 @@ export class HomePageOneSliderComponent implements OnInit, OnChanges {
          ]
       };
    }
+
+
+
+   getpubImages(){
+      return this.genericservice.get(BaseUrl+'/PubImages')
+    }
 
 }

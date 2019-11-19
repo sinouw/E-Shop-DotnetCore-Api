@@ -34,7 +34,7 @@ export class ProductsListComponent implements OnInit {
                 this.category = queryParams['category'];
                 this.type = null;
                 this.type = params['type'];
-
+              
                 this.getPageTitle();
             });
         });

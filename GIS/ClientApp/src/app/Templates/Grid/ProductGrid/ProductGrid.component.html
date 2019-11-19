@@ -66,14 +66,10 @@
     <div fxFlex.xs="100" fxFlex.sm="50" fxFlex.md="50" fxFlex.lg="{{lg}}" fxFlex.xl="{{xl}}" *ngFor="let product of productsGrid; let i=index;">
         <mat-card class="product-card">
             <a class="p-link">
-                <!-- <img width="626" height="800" mat-card-image [src]="product?.image" alt="Photo of a Shiba Inu"> -->
-                <!-- <img width="626" height="800" mat-card-image src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" alt="Photo of a Shiba Inu"> -->
                 <img width="626" height="800" mat-card-image [src]="product?.FrontImg" alt="Photo of a Shiba Inu">
 
             </a>
-            <!-- <div class="wishlist-icon {{i}}-wishlist" id="{{i}}-wishlist">
-                <a (click)="productAddToWishlist(product, i+'-wishlist')"><i  class="material-icons"> favorite </i></a>
-            </div> -->
+
             <!-- wishlist-icon-->
             <mat-card-content class="product-content relative">
                 <h5><a class="title-link">{{product?.NomProduit || null}}</a> </h5>

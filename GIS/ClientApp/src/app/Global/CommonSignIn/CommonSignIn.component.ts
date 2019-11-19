@@ -19,8 +19,8 @@ export class CommonSignInComponent implements OnInit {
   ngOnInit() {
     
     
-    //  if (localStorage.getItem('token') != null)
-    //    this.router.navigateByUrl('/home');
+      if (localStorage.getItem('token') != null)
+        this.router.navigateByUrl('/home');
   }
 
 

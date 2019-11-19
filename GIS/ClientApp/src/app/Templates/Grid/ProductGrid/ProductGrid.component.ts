@@ -54,21 +54,9 @@ export class ProductGridComponent implements OnInit {
         this.loaded = true;
     }
 
-    public productAddToWishlist(value: any, parentClass) {
-        console.log(value);
+   
 
-        if (!(document.getElementById(parentClass).classList.contains('wishlist-active'))) {
-            let element = document.getElementById(parentClass).className += ' wishlist-active';
-        }
-        this.addToWishList.emit(value);
-    }
-
-    public checkCartAlready(singleProduct) {
-        let products = JSON.parse(localStorage.getItem('cart_item')) || [];
-        if (!products.some((item) => item.name == singleProduct.name)) {
-            return true;
-        }
-    }
+  
 
     list(): any {
         return this.genericservice.get(BaseUrl + '/Produits');

@@ -56,6 +56,7 @@ export class ReportsComponent implements OnInit {
          });
          this.imagenumber = this.ImagesPath.length
          this.mainImgPath =this.ImagesPath[0]
+         console.log("Main Image Path : ",this.mainImgPath);
          this.data[0].image_gallery=this.ImagesPath
             console.log("gallery images : " ,this.data[0].image_gallery);
          
@@ -65,12 +66,15 @@ export class ReportsComponent implements OnInit {
          
       })
 
+      
+      
    }
 
    public getImagePath(imgPath: string, index: number) {
       //  console.log(imgPath,index);
             if(imgPath!='https://via.placeholder.com/625x800'){
-
+      console.log(index);
+      
       console.log(imgPath);
 
             document.querySelector('.border-active').classList.remove('border-active');
@@ -98,7 +102,7 @@ export class ReportsComponent implements OnInit {
 
   }
 
-  DeletePubImage(path="Uploads/PubImages/e7c8728f-6849-496c-a1a2-2c6f84853de3/pub.jpg"){
+  DeletePubImage(path=this.mainImgPath){
    let id=null
    
    if(path!=null)

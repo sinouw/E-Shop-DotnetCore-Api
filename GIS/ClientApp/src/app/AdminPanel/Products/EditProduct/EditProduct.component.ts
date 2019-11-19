@@ -107,28 +107,18 @@ export class EditProductComponent implements OnInit {
             Marque: this.product.Marque,
             IdProd: this.idProd
         });
-        
-        // this.mainImgPath=this.data[0].image_gallery[this.data[0].image_gallery.length - 1]
+
        
         for (let i = this.data[0].image_gallery.length ; i > this.imagenumber ; i--) {
             this.data[0].image_gallery.splice(0,1)
         }  
 
-        // our biggest problem----------------------------------------------------------------
-        // our biggest problem----------------------------------------------------------------
-        // our biggest problem----------------------------------------------------------------
-        // our biggest problem----------------------------------------------------------------
-        // our biggest problem----------------------------------------------------------------
-
         this.productImages=[]
         this.productImages.forEach(e => {
             this.productImages.push(this.data[0].image_gallery)
-            // helloworld
-            // helloworld
-            // helloworld
-            // helloworld
+
         });
-        // this.productImages.push(this.data[0].image_gallery)
+
         console.table(this.productImages);
 
 

@@ -40,6 +40,12 @@
                                                             <a id="{{i}}_img" class="p-link" [ngClass]="{ 'border-active': i === 0 }" href="javascript:void(0)" (mouseenter)="getImagePath(img, i)">
                                                                 <img [src]="img" alt="" width="400" height="400">
                                                             </a>
+                                                            <!-- <button class="edit-btn" md-mini-fab type="button" *ngIf="img != 'https://via.placeholder.com/625x800'">
+                                                                <label for="fileToUpload">
+                                                                    <mat-icon >edit</mat-icon>
+                                                                </label>
+                                                            </button> -->
+
                                                             <button class="add-btn" md-mini-fab type="button" *ngIf="img == 'https://via.placeholder.com/625x800'">
                                                             <label for="fileToUpload">
                                                                 <mat-icon >add</mat-icon>
@@ -90,9 +96,9 @@
 
 
                             </div>
-                            <div class="mb-5 detail-btns">
-                                <button mat-raised-button color="accent" class="button-lg mr-3" (click)="UploadImages()">Modifier</button>
-                                <button class="button-lg" (click)="DeletePubImage()" mat-raised-button>Annuler</button>
+                            <div class="mb-3 detail-btns">
+                                <button mat-raised-button color="warn" class="button-lg mr-3" (click)="DeletePubImage()">Delete</button>
+                                <button mat-raised-button color="primary" class="button-lg mr-3" (click)="UploadImages()">Modifier</button>
                             </div>
                         </div>
                     </div>

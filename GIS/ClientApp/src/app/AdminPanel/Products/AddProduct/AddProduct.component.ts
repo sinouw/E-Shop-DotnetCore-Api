@@ -46,7 +46,7 @@ export class AddProductComponent implements OnInit {
             Prix: ['', [Validators.required]],
             Disponible: ['', [Validators.required]],
             Description: ['', [Validators.required]],
-            Remise: ['', [Validators.required]],
+            Remise: [50, [Validators.required]],
             IdScat: ['', [Validators.required]],
             Couleur: ['', [Validators.required]],
             Marque: ['', [Validators.required]],

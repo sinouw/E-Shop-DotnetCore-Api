@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import {Observable, Subscription} from 'rxjs';
 import {EmbryoService} from '../../../Services/Embryo.service';
+import { AdminGenericService } from 'src/app/AdminPanel/Service/AdminGeneric.service';
+import { BaseUrl } from 'src/app/models/baseurl.data';
+import { PageEvent, MatPaginator , MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: 'app-ProductsList',
@@ -10,6 +13,7 @@ import {EmbryoService} from '../../../Services/Embryo.service';
 })
 export class ProductsListComponent implements OnInit {
 
+    @ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
     Products: any[] = [];
     type: any;
     pips: boolean = true;
@@ -17,17 +21,51 @@ export class ProductsListComponent implements OnInit {
     category: any;
     pageTitle: string;
     subPageTitle: string;
+    public Count: number;
+    public pageNumber: number = 1;
 
-    public subscribers: any = {};
+         // MatPaginator Inputs
+    length = 100;
+    pageSize = 4;
+    pageSizeOptions: number[] = [5, 10, 25, 100];
+    dataSource : MatTableDataSource<any> = new MatTableDataSource<any>();
+    pageEvent: PageEvent;
+    cardsObs: Observable<any>;
+
+    subscribers: any = {};
+    productsGrid: any;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         public embryoService: EmbryoService,
+        private genericservice : AdminGenericService,
+        private changeDetectorRef: ChangeDetectorRef
     ) {
     }
 
     ngOnInit() {
+
+        this.changeDetectorRef.detectChanges();
+
+        this.dataSource.paginator = this.paginator;
+
+        this.list().subscribe(res=>{
+            console.log(res);
+            
+            this.productsGrid=res.Items
+            this.pageNumber = res.pageIndex;
+            // this.length = res.Count;
+
+            this.dataSource = new MatTableDataSource<any>(this.productsGrid);
+            this.cardsObs = this.dataSource.connect();
+            console.log(this.cardsObs)
+            this.dataSource.paginator = this.paginator;
+		},
+		err=>{
+			console.log(err);
+		})
+
 
         this.route.params.subscribe(params => {
             this.route.queryParams.forEach(queryParams => {
@@ -40,6 +78,36 @@ export class ProductsListComponent implements OnInit {
         });
     }
 
+    list(){
+		// return this.genericservice.get(BaseUrl+'/Produits?&page=2&pageSize=4')
+		return this.genericservice.get(BaseUrl+'/Produits?&page='+this.pageNumber+'&pageSize='+this.pageSize)
+	}
+
+
+    onPage(pageEvent: PageEvent) {
+        this.genericservice.get(BaseUrl+'/Produits?page='+ pageEvent.pageIndex+"&pageSize="+this.pageSize)
+        .subscribe(res=>{
+            this.productsGrid=res.Items
+            this.pageNumber = res.pageIndex;
+            // this.length = res.Count;
+
+            this.dataSource = new MatTableDataSource<any>(this.productsGrid);
+            this.cardsObs = this.dataSource.connect();
+            console.log(this.cardsObs)
+            // this.dataSource.paginator = this.paginator;
+        },
+        err=>{
+            console.log(err);
+            
+        })
+
+     
+        
+
+
+        
+    }
+    
     public getPageTitle() {
         this.pageTitle = null;
         this.subPageTitle = null;
@@ -90,4 +158,17 @@ export class ProductsListComponent implements OnInit {
         return hits;
     }
 
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+  }
+
+  applyFilter(filterValue: string,event) {
+    let value =filterValue.trim().toLowerCase()
+
+         this.dataSource.filter = value;
+         if (this.dataSource.paginator) {
+             this.dataSource.paginator.firstPage();
+         }
+        }
+    
 }

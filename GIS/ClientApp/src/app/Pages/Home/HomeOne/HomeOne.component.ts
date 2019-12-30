@@ -116,7 +116,7 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
 
 
       this.listProduit().subscribe(res=>{
-         this.Products=res
+         this.Products=res.Items
             console.log(this.Products);
          },
          err=>{
@@ -205,7 +205,8 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
    }
 
    listProduit(){
-		return this.genericservice.get(BaseUrl+'/Produits?$orderby=CreationDate desc &$top=10')
+		// return this.genericservice.get(BaseUrl+'/Produits?$orderby=CreationDate desc &$top=10')
+		return this.genericservice.get(BaseUrl+'/Produits')
    }
    
    listsousCategories(){

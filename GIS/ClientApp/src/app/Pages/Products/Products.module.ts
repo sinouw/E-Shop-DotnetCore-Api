@@ -34,7 +34,8 @@ import { MatButtonModule,
 			MatSliderModule,
 			MatRadioModule,
 			MatDialogModule,
-			MatGridListModule
+			MatGridListModule,
+			MatPaginatorModule
 		} from '@angular/material';
 
 @NgModule({
@@ -69,7 +70,8 @@ import { MatButtonModule,
 		GlobalModule,
 		TemplatesModule,
 		NgAisModule,
-		FormsModule
+		FormsModule,
+		MatPaginatorModule,
 	],
 	declarations: [
 		ProductsListComponent, 

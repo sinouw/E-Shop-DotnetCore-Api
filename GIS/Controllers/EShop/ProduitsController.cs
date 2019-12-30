@@ -4,33 +4,45 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using GIS.Models.Query;
+using GIS.Models.Query.dto;
 using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Formatter.Serialization;
+using Microsoft.AspNet.OData.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebAPI.Models;
 using WebAPI.Models.ZahraShop;
 
 namespace WebAPI.Controllers.EShop
 {
+
+
     //[Authorize(Roles = "Admin,SuperAdmin")]
     [Route("api/Produits")]
     [ApiController]
     public class ProduitsController : ControllerBase
     {
         private readonly EshopContext _context;
+        private readonly IUrlHelper _urlHelper;
 
-        public ProduitsController(EshopContext context)
+        public ProduitsController(IUrlHelper urlHelper, EshopContext context)
         {
             _context = context;
+            _urlHelper = urlHelper;
         }
 
         // GET: api/Produits
         [HttpGet]
         [EnableQuery]
-        public ActionResult<IQueryable<Produit>> GetProduits()
+        public ActionResult<IQueryable<Produit>> GetProduits(int? page, int pagesize = 10)
         {
+            
+
             var prods = _context.Produits.Select(s => new
             {
                 s.IdProd,
@@ -44,13 +56,28 @@ namespace WebAPI.Controllers.EShop
                 s.CreationDate,
                 s.IdScat,
                 NsousCategorie = s.SousCategorie.NsousCategorie,
-                //FrontImg = s.Images.FirstOrDefault<Image>().ImageName,
-                FrontImg = s.FrontImg,
+                s.FrontImg,
                 s.Images,
                 s.Caracteristiques
             });
+            //}).AsQueryable();
 
-            return Ok(prods);
+            var prods2 = _context.Produits.ToList();
+
+
+            var countDetails = prods.Count();
+
+            var result = new GIS.Models.Query.PageResult<Produit>
+            {
+                Count = countDetails,
+                PageIndex = page ?? 1,
+                PageSize = 10,
+                Items = prods2.Skip((page - 1 ?? 0) * pagesize).Take(pagesize).ToList()
+            };
+
+
+            //return Ok(prods);
+            return Ok(result);
         }
 
         // GET: api/Produits/5
@@ -151,6 +178,7 @@ namespace WebAPI.Controllers.EShop
         {
             return _context.Produits.Any(e => e.IdProd == id);
         }
+
         
 
     }

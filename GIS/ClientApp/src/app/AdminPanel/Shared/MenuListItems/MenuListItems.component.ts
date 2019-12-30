@@ -11,12 +11,16 @@ import { TranslateService } from '@ngx-translate/core';
 
 export class MenuListItemsComponent implements OnInit {
 
+	menu :any[]=[]
+
+
 	constructor(public menuItems: AdminMenuItems,
 				private router :Router,
                 private activatedRoute: ActivatedRoute,
                 public translate : TranslateService ) { }
 
 	ngOnInit() {
+		this.menu=this.menuItems.getAll()
 	}
 
 }

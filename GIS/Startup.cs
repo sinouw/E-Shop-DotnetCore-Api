@@ -16,6 +16,18 @@ using System.Buffers;
 using System.Text;
 using WebAPI.Models;
 
+
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
+using WebAPI.Models.ZahraShop;
+using GIS.Models.Query.dto;
+
 namespace GIS
 {
     public class Startup
@@ -58,6 +70,13 @@ namespace GIS
                 options.Password.RequiredLength = 4;
             }
             );
+
+            services.AddScoped<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+                var factory = x.GetRequiredService<IUrlHelperFactory>();
+                return factory.GetUrlHelper(actionContext);
+            });
 
             services.AddCors();
 
@@ -120,8 +139,11 @@ namespace GIS
             app.UseHttpsRedirection();
             app.UseMvc(routerBuilder => {
                 routerBuilder.EnableDependencyInjection();
-                routerBuilder.Expand().Select().Count().OrderBy().Filter().MaxTop(null);
+                routerBuilder.Expand().Select().Count().OrderBy().Filter().MaxTop(null); 
+
+
             });
+      
 
             app.UseSpa(spa =>
             {
@@ -138,8 +160,14 @@ namespace GIS
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
+            .WithExposedHeaders("X-Pagination")
             
             );
+
+            AutoMapper.Mapper.Initialize(mapper =>
+            {
+                mapper.CreateMap<Produit, produitDto>().ReverseMap();
+            });
         }
     }
 }

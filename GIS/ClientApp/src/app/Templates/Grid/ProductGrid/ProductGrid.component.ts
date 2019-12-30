@@ -54,10 +54,6 @@ export class ProductGridComponent implements OnInit {
         this.loaded = true;
     }
 
-   
-
-  
-
     list(): any {
         return this.genericservice.get(BaseUrl + '/Produits');
     }

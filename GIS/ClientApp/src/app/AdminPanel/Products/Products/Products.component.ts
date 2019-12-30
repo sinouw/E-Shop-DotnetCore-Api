@@ -47,8 +47,8 @@ export class ProductsComponent implements OnInit {
 	//getProductResponse method is used to get the response of all products.
  	public getProductResponse(response) {
 	  this.productsGrid = null;
-	  this.productsGrid = response;
-	  this.productsListCopie = response;
+	  this.productsGrid = response.Items;
+	  this.productsListCopie = response.Items;
 	  this.productShowType(this.showType)
    }
 

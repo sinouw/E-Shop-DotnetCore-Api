@@ -206,7 +206,7 @@ export class HomeoneComponent implements OnInit, AfterViewChecked{
 
    listProduit(){
 		// return this.genericservice.get(BaseUrl+'/Produits?$orderby=CreationDate desc &$top=10')
-		return this.genericservice.get(BaseUrl+'/Produits')
+		return this.genericservice.get(BaseUrl+'/Produits?&page=1&pageSize=8')
    }
    
    listsousCategories(){

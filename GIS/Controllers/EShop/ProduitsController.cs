@@ -28,12 +28,11 @@ namespace WebAPI.Controllers.EShop
     public class ProduitsController : ControllerBase
     {
         private readonly EshopContext _context;
-        private readonly IUrlHelper _urlHelper;
+    
 
-        public ProduitsController(IUrlHelper urlHelper, EshopContext context)
+        public ProduitsController(EshopContext context)
         {
             _context = context;
-            _urlHelper = urlHelper;
         }
 
         // GET: api/Produits

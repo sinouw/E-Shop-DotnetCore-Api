@@ -56,6 +56,7 @@ export class ProductsListComponent implements OnInit {
             this.productsGrid=res.Items
             this.pageNumber = res.pageIndex;
             // this.length = res.Count;
+            this.length = res.Count;
 
             this.dataSource = new MatTableDataSource<any>(this.productsGrid);
             this.cardsObs = this.dataSource.connect();
@@ -89,12 +90,11 @@ export class ProductsListComponent implements OnInit {
         .subscribe(res=>{
             this.productsGrid=res.Items
             this.pageNumber = res.pageIndex;
-            // this.length = res.Count;
+            this.length = res.Count;
 
             this.dataSource = new MatTableDataSource<any>(this.productsGrid);
             this.cardsObs = this.dataSource.connect();
             console.log(this.cardsObs)
-            // this.dataSource.paginator = this.paginator;
         },
         err=>{
             console.log(err);
@@ -169,6 +169,15 @@ export class ProductsListComponent implements OnInit {
          if (this.dataSource.paginator) {
              this.dataSource.paginator.firstPage();
          }
-        }
+    }
+
+    productPage(id, NScat) {
+        console.log('hello work ^^ ');
+        console.log(id);
+
+        this.router.navigate(['/products', NScat, id]);
+
+
+    }
     
 }

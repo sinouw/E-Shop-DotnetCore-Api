@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GIS.Models.GisShop;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,7 @@ using WebAPI.Models.ZahraShop;
 namespace WebAPI.Controllers.EShop
 {
 
-    [Authorize(Roles = "Admin,SuperAdmin")]
+    //[Authorize(Roles = "Admin,SuperAdmin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
@@ -24,6 +25,26 @@ namespace WebAPI.Controllers.EShop
         {
             _context = context;
         }
+
+        // GET: api/Categories/dto
+        [HttpGet("simpleCategdto")]
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<SimpleCategory>>> GetCategoriesDto()
+        {
+            var ls = await _context.Categories.Include(c => c.SousCategories).ThenInclude(sc => sc.Produits).ThenInclude(p => p.Images)
+                   .ToListAsync();
+            var catList = new List<SimpleCategory>();
+
+            ls.ForEach(c =>
+            {
+            var souscatlist = new List<SimpleCategory>();
+                c.SousCategories.Select(s => s.NsousCategorie).ToList().ForEach(s => souscatlist.Add(new SimpleCategory(s, null)));
+                catList.Add(new SimpleCategory(c.Ncategorie,souscatlist ));
+                });
+            return catList;
+
+        }
+
 
         // GET: api/Categories
         [HttpGet]

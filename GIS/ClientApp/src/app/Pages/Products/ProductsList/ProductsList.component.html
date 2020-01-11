@@ -35,11 +35,7 @@
                         <!-- <img width="626" height="800" mat-card-image src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" alt="Photo of a Shiba Inu"> -->
                         <img width="626px" height="300px" mat-card-image [src]="product?.FrontImg" alt="Photo of a Shiba Inu">
                     </a>
-                    <div class="wishlist-icon">
-                        <a (click)="deleteProduct(product.IdProd,i)">
-                            <mat-icon> delete </mat-icon>
-                        </a>
-                    </div>
+
                     <!-- wishlist-icon-->
                     <mat-card-content class="product-content relative">
                         <h5><a class="title-link">{{product.NomProduit || null}}</a> </h5>
@@ -52,7 +48,7 @@
                         </div>
                         <!--product-price-->
                         <div class="m-icon">
-                            <button mat-fab (click)="onEditProduct(product)"><i class="material-icons">edit</i></button>
+                            <button mat-fab (click)="productPage(product.IdProd,product.NsousCategorie)"><i class="material-icons">remove_red_eye</i></button>
                         </div>
                         <!-- m-icon -->
                     </mat-card-content>

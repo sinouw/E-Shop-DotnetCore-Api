@@ -33,8 +33,8 @@ const HeaderOneItems = [
         icon: 'party_mode',
         children: [
             {
-                state: 'smartphone',
-                name: 'SMARTPHONE',
+                state: 'Telephone',
+                name: 'TELEPHONE',
                 type: 'sub',
                 icon: 'arrow_right_alt',
                 children: [

@@ -1,8 +1,8 @@
 <!--  Top menu -->
 <nav class="app-nav">
     <ul class="app-nav-list">
-        <li class="app-nav-item" *ngFor="let item of menuItems.getMainMenu()" [ngClass]="{'mega': item.mega}">
-            <!-- <li class="app-nav-item" *ngFor="let item of menu" [ngClass]="{'mega': 'true'}"> -->
+        <!-- <li class="app-nav-item" *ngFor="let item of menuItems.getMainMenu()" [ngClass]="{'mega': item.mega}"> -->
+        <li class="app-nav-item" *ngFor="let item of menu" [ngClass]="{'mega': 'true'}">
             <ng-container *ngIf="item.type == 'sub'">
                 <a class="nav-link" routerLinkActive="active-link">
 				  {{item?.name}}

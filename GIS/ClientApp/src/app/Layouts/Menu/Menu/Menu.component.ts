@@ -47,12 +47,40 @@ export class MenuComponent implements OnInit {
 
    constructor(public menuItems: MenuItems,public router: Router, public translate: TranslateService,
     private genericservice: AdminGenericService) {
-
       this.getCategories().subscribe((res:any) => {
-  // //       console.log(res);
-        this.categories=res;
-        this.MenuChilren=res
-        console.log(this.MenuChilren);
+        // debugger
+        
+        console.clear()
+        // debugger
+          res.forEach(categorie => {
+            let scatmenu :any =[]
+          categorie.children.forEach(souscateg => {
+           const scat ={
+              state: "products/"+souscateg.state.toLowerCase(),
+              queryState: souscateg.name,
+              name: souscateg.name.toUpperCase(),
+              type: 'queryParams',
+              icon: 'arrow_right_alt',
+            }
+            
+            scatmenu.push(scat)
+            console.log("souscat menu : ",this.souscategMenu);
+            
+          });
+          
+          this.MenuChilren.push(
+            {
+              state: categorie.state,
+              name: categorie.name,
+              type: 'sub',
+              icon: 'arrow_right_alt',
+              children: scatmenu
+            }
+          )
+           this.souscategMenu.length=0 
+        });
+        // this.MenuChilren=this.categories
+        console.log("MenuChilren",this.MenuChilren)
         
   // // // debugger
   //       this.categories.forEach(categorie => {
@@ -108,7 +136,7 @@ export class MenuComponent implements OnInit {
                
           
       
-
+// debugger
       this.menu = [{
         state: 'home',
         name: 'ACCEUIL',
@@ -117,14 +145,14 @@ export class MenuComponent implements OnInit {
         },
         {
           state: 'products',
-          name: 'Products',
+          name: 'PRODUCTS',
           type: 'link',
           icon: 'party_mode'
       },
    
       {
         state: 'products',
-        name: 'Categories',
+        name: 'CATEGORIES',
         type: 'sub',
         icon: 'party_mode',
         children: this.MenuChilren
@@ -136,13 +164,6 @@ export class MenuComponent implements OnInit {
         icon: 'perm_contact_calendar'
     },
   ]
-
-  setTimeout(() => {
-    
-    console.log("Menu 3 : ",this.MenuChilren);
-  }, 2000);
-
-
    }
 
    ngOnInit() {

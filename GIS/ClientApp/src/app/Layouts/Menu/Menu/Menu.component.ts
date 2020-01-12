@@ -48,10 +48,8 @@ export class MenuComponent implements OnInit {
    constructor(public menuItems: MenuItems,public router: Router, public translate: TranslateService,
     private genericservice: AdminGenericService) {
       this.getCategories().subscribe((res:any) => {
-        // //       console.log(res);
         // debugger
         
-        console.info("menu,children",this.categories);
         console.clear()
         // debugger
           res.forEach(categorie => {
@@ -70,7 +68,7 @@ export class MenuComponent implements OnInit {
             
           });
           
-          this.categories.push(
+          this.MenuChilren.push(
             {
               state: categorie.state,
               name: categorie.name,
@@ -81,7 +79,7 @@ export class MenuComponent implements OnInit {
           )
            this.souscategMenu.length=0 
         });
-        this.MenuChilren=this.categories
+        // this.MenuChilren=this.categories
         console.log("MenuChilren",this.MenuChilren)
         
   // // // debugger
@@ -147,14 +145,14 @@ export class MenuComponent implements OnInit {
         },
         {
           state: 'products',
-          name: 'Products',
+          name: 'PRODUCTS',
           type: 'link',
           icon: 'party_mode'
       },
    
       {
         state: 'products',
-        name: 'Categories',
+        name: 'CATEGORIES',
         type: 'sub',
         icon: 'party_mode',
         children: this.MenuChilren

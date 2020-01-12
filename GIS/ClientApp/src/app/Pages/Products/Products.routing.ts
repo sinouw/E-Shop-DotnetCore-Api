@@ -12,10 +12,10 @@ export const ProductsRoutes : Routes = [
 		path: ':type/:id',
 		component: DetailPageComponent
 	},
-	{
-		path: ':id',
-		component: DetailPageComponent
-	},
+	// {
+	// 	path: ':id',
+	// 	component: DetailPageComponent
+	// },
    { 
       path: ':type', 
       component: ProductsListComponent 

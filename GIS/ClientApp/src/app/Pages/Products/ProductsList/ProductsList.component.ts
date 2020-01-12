@@ -93,19 +93,10 @@ export class ProductsListComponent implements OnInit {
             console.log(this.cardsObs)
         },
         err=>{
-            console.log(err);
-            
-        })
-
-     
-        
-
-
-        
+            console.log(err);   
+        })    
     }
     
-   
-
 
     getData(){
         if(this.type===undefined){

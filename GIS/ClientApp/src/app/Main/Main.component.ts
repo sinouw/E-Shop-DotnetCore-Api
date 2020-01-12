@@ -9,6 +9,8 @@ import { Directionality } from '@angular/cdk/bidi';
 import { MediaChange } from '@angular/flex-layout';
 import { TranslateService } from '@ngx-translate/core';
 import { Meta, Title } from "@angular/platform-browser";
+import { AdminGenericService } from '../AdminPanel/Service/AdminGeneric.service';
+import { BaseUrl } from '../models/baseurl.data';
 
 @Component({
   selector: 'app-main',
@@ -29,7 +31,8 @@ export class MainComponent implements OnInit {
                public translate: TranslateService,
                private router: Router,
                meta: Meta, title: Title,
-               private activatedRoute: ActivatedRoute) { 
+               private activatedRoute: ActivatedRoute,
+               private genericservice: AdminGenericService) { 
 
       title.setTitle('Embryo - Angular Material Design eCommerce Template');
 
@@ -54,10 +57,20 @@ export class MainComponent implements OnInit {
    }
 
    ngOnInit() {
+
+
+
+
+
+
       this.startTimer(); 
       document.getElementById('html').classList.remove("admin-panel");
       document.getElementById('html').classList.add("user-end");
    }
+
+   getCategories(){
+      return this.genericservice.get(BaseUrl + '/categories/simpleCategdto')
+     };
 
    public startTimer() {
       this.timer = 0;

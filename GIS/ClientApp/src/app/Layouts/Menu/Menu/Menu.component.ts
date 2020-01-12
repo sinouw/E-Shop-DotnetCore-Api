@@ -82,54 +82,6 @@ export class MenuComponent implements OnInit {
         // this.MenuChilren=this.categories
         console.log("MenuChilren",this.MenuChilren)
         
-  // // // debugger
-  //       this.categories.forEach(categorie => {
-  //         this.souscategories.length=0
-  //         this.souscategMenu.length=0
-          
-          
-  //         categorie.SousCategories.forEach(e => {
-  //           this.souscategories.push(e as SousCateg)
-  //         });
-          
-  //          debugger
-  
-  //         for (let i = 0; i < this.souscategories.length; i++) {
-  //           let souscateg = this.souscategories[i];
-                
-  //           this.souscategMenu.push({
-  //                   state: 'products/'+categorie.Ncategorie,
-  //                   name: souscateg.NsousCategorie,
-  //                   type: 'queryParams',
-  //                   icon: 'arrow_right_alt',
-  //                    })
-            
-  //         }
-               
-
-          
-
-  //         this.MenuChilren.unshift({
-  //               state: categorie.Ncategorie,
-  //               name: categorie.Ncategorie,
-  //               type: 'sub',
-  //               icon: 'arrow_right_alt',
-  //               children:this.souscategMenu
-  //           })
-          
-          // this.souscategMenu.length=0
-        
-
-
-        //   console.log("Menu : ",this.MenuChilren);
-          
-
-        // });
-        // }, err => { console.log(err);
-
-
-        
-
  }); 
 
   
@@ -175,10 +127,16 @@ export class MenuComponent implements OnInit {
       if (item.children && item.children.length) {
          this.expanded = !this.expanded;
       }
+      console.log(item);
+      
    }
 
 
    public redirectTo(subchildState){
+      let souscategorie = subchildState.state.split("/")[1]
+      
+    this.router.navigate(['/products', souscategorie]);
+     
    }
 
    getCategories(){

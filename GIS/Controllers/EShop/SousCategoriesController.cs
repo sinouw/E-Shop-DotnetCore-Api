@@ -12,7 +12,7 @@ using WebAPI.Models.ZahraShop;
 
 namespace WebAPI.Controllers.EShop
 {
-    [Authorize(Roles = "Admin,SuperAdmin")]
+    //[Authorize(Roles = "Admin,SuperAdmin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SousCategoriesController : ControllerBase

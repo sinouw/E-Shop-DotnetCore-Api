@@ -72,7 +72,7 @@
                                     <br/>
                                     <br/>
                                     <br/>
-                                    <span class="font-medium"> Nom du produit </span>: {{Product?.NomProduit}}
+                                    <span class="font-medium"> Nom du produit  </span>: {{Product?.NomProduit}}
                                     <br/>
                                     <span class="font-medium"> prix </span>:{{Product?.Prix}}
                                     <br/>
@@ -111,7 +111,42 @@
                                 <div class="block-title text-center gap">
                                     <h2>You Might Also Like</h2>
                                 </div>
-                                <embryo-ProductGrid [currency]="embryoService?.currency" [products]="productsList" gridLength="4" (addToCart)="addToCart($event)" (addToWishList)="addToWishList($event)"></embryo-ProductGrid>
+                                <!-- <embryo-ProductGrid [currency]="embryoService?.currency" [products]="productsList" gridLength="4" (addToCart)="addToCart($event)" (addToWishList)="addToWishList($event)"></embryo-ProductGrid> -->
+
+                                <div fxLayout="row wrap" fxLayoutAlign="start stretch" *ngIf="productsGrid && productsGrid.length>0">
+                                    <div fxFlex.gt-md="25" fxFlex.gt-sm="50" fxFlex.gt-xs="50" fxFlex="100" *ngFor="let product of productsGrid ; let i=index;">
+                                        <mat-card class="product-card">
+                                            <a class="p-link">
+                                                <!-- <img width="626" height="800" mat-card-image [src]="product?.image" alt="Photo of a Shiba Inu"> -->
+                                                <!-- <img width="626" height="800" mat-card-image src="https://t4.ftcdn.net/jpg/01/82/35/11/240_F_182351193_5mOBsDX7ntLaGixDlIFIJ8LeaJemGLAC.jpg" alt="Photo of a Shiba Inu"> -->
+                                                <img width="626px" height="300px" mat-card-image [src]="product?.FrontImg" alt="Photo of a Shiba Inu">
+                                            </a>
+
+                                            <!-- wishlist-icon-->
+                                            <mat-card-content class="product-content relative">
+                                                <h5><a class="title-link">{{product.NomProduit || null}}</a> </h5>
+                                                <!-- <p class="category-wrap mb-2">{{product?.NsousCategorie || null}}</p> -->
+                                                <p class="category-wrap mb-2">{{product?.Marque || null}}</p>
+                                                <div class="product-price">
+                                                    <div fxFlex fxLayoutAlign="space-between">
+                                                        <h6 class="accent-color">{{product?.Prix | currency}}</h6>
+                                                    </div>
+                                                </div>
+                                                <!--product-price-->
+                                                <div class="m-icon">
+                                                    <button mat-fab (click)="productPage(product.IdProd,product.Marque)"><i class="material-icons">remove_red_eye</i></button>
+                                                </div>
+                                                <!-- m-icon -->
+                                            </mat-card-content>
+                                            <!-- product-content -->
+
+                                        </mat-card>
+                                    </div>
+                                </div>
+
+
+
+
                                 <div class="text-center mt-4">
                                     <!-- <button mat-raised-button [routerLink]="['/products', Product.NsousCategorie]">Show All</button> -->
                                     <button mat-raised-button>Show All</button>

@@ -22,7 +22,7 @@ export class ProductsListComponent implements OnInit {
     pageTitle: string;
     subPageTitle: string;
     public Count: number;
-    public pageNumber: number = 1;
+    public pageNumber: number=1;
 
          // MatPaginator Inputs
     length = 100;
@@ -45,48 +45,44 @@ export class ProductsListComponent implements OnInit {
     }
 
     ngOnInit() {
-
-        this.changeDetectorRef.detectChanges();
-
-        this.dataSource.paginator = this.paginator;
-
-        this.list().subscribe(res=>{
-            console.log(res);
+        
+        console.clear()
+        this.route.params.subscribe((res:any) => {
+            this.type = res.type;
+             this.getData()
+            console.log("params",res.type);
             
-            this.productsGrid=res.Items
-            this.pageNumber = res.pageIndex;
-            // this.length = res.Count;
-            this.length = res.Count;
+         })
 
-            this.dataSource = new MatTableDataSource<any>(this.productsGrid);
-            this.cardsObs = this.dataSource.connect();
-            console.log(this.cardsObs)
-            this.dataSource.paginator = this.paginator;
-		},
-		err=>{
-			console.log(err);
-		})
+        
 
 
-        this.route.params.subscribe(params => {
-            this.route.queryParams.forEach(queryParams => {
-                this.category = queryParams['category'];
-                this.type = null;
-                this.type = params['type'];
+        // this.route.params.subscribe(params => {
+        //     this.route.queryParams.forEach(queryParams => {
+        //         this.category = queryParams['category'];
+        //         this.type = null;
+        //         this.type = params['type'];
               
-                this.getPageTitle();
-            });
-        });
+        //         this.getPageTitle();
+        //     });
+        // });
     }
 
     list(){
-		// return this.genericservice.get(BaseUrl+'/Produits?&page=2&pageSize=4')
 		return this.genericservice.get(BaseUrl+'/Produits?&page='+this.pageNumber+'&pageSize='+this.pageSize)
-	}
+    }
+    listWithSousCat(){
+		// return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page='+this.pageNumber+"&sousCategorie="+this.type+'&pageSize='+this.pageSize)	
+		return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page=1&sousCategorie='+this.type+'&pageSize='+this.pageSize)	
+    }
 
 
     onPage(pageEvent: PageEvent) {
-        this.genericservice.get(BaseUrl+'/Produits?page='+ pageEvent.pageIndex+"&pageSize="+this.pageSize)
+        console.clear();
+        
+        console.log(this.type);
+        
+        this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?page='+ pageEvent.pageIndex+"&sousCategorie="+this.type+"&pageSize="+this.pageSize)
         .subscribe(res=>{
             this.productsGrid=res.Items
             this.pageNumber = res.pageIndex;
@@ -97,17 +93,67 @@ export class ProductsListComponent implements OnInit {
             console.log(this.cardsObs)
         },
         err=>{
-            console.log(err);
-            
-        })
-
-     
-        
-
-
-        
+            console.log(err);   
+        })    
     }
     
+
+    getData(){
+        if(this.type===undefined){
+            this.dataSource.data=[]
+            this.changeDetectorRef.detectChanges();
+            this.dataSource.paginator = this.paginator;
+    
+            this.list().subscribe(res=>{
+            // this.listWithSousCat().subscribe(res=>{
+                console.log(res);
+                
+                this.productsGrid=res.Items
+                this.pageNumber = res.pageIndex;
+                // this.length = res.Count;
+                this.length = res.Count;
+    
+                this.dataSource = new MatTableDataSource<any>(this.productsGrid);
+                this.cardsObs = this.dataSource.connect();
+                console.log(this.cardsObs)
+                this.dataSource.paginator = this.paginator;
+            },
+            err=>{
+                console.log(err);
+            })
+         }
+         else{
+             this.dataSource.data=[]
+             this.changeDetectorRef.detectChanges();
+             this.dataSource.paginator = this.paginator;
+     
+            //  this.list().subscribe(res=>{
+             this.listWithSousCat().subscribe(res=>{
+                 console.log(res);
+                 
+                 this.productsGrid=res.Items
+                 this.pageNumber = res.pageIndex;
+                 // this.length = res.Count;
+                 this.length = res.Count;
+     
+                 this.dataSource = new MatTableDataSource<any>(this.productsGrid);
+                 this.cardsObs = this.dataSource.connect();
+                 console.log(this.cardsObs)
+                 this.dataSource.paginator = this.paginator;
+             },
+             err=>{
+                 console.log(err);
+             })
+         }
+    }
+    
+    productPage(id, NScat) {
+        console.log('hello work ^^ ');
+        console.log(id);
+
+        this.router.navigate(['/products', NScat, id]);
+    }
+
     public getPageTitle() {
         this.pageTitle = null;
         this.subPageTitle = null;
@@ -171,13 +217,5 @@ export class ProductsListComponent implements OnInit {
          }
     }
 
-    productPage(id, NScat) {
-        console.log('hello work ^^ ');
-        console.log(id);
-
-        this.router.navigate(['/products', NScat, id]);
-
-
-    }
-    
+   
 }

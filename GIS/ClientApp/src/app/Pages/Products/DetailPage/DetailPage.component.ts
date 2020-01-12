@@ -27,6 +27,9 @@ export class DetailPageComponent implements OnInit {
    mainImgPath: any;
    Images: any = [];
    ImagesPath: any= [];
+   pageNumber: any= 1;
+   pageSize: any = 4;
+   productsGrid: any;
 
    constructor(private route: ActivatedRoute,
               private router: Router,
@@ -44,11 +47,30 @@ export class DetailPageComponent implements OnInit {
       console.log(this.id);
       
       this.getProduct()
+      this.getProducts()
    }
+
+   getProducts(){
+      this.list().subscribe((res:any)=>{
+         console.log("Products: ",res);
+         
+         this.productsGrid=res.Items
+      
+   },
+   err=>{
+      console.log(err);
+   })
+   }
+
 
    public getData() {
       this.embryoService.getProducts().valueChanges().subscribe(res => this.checkResponse(res));
    }
+
+   list(){
+		// return this.genericservice.get(BaseUrl+'/Produits?&page=2&pageSize=4')
+		return this.genericservice.get(BaseUrl+'/Produits?&page='+this.pageNumber+'&pageSize='+this.pageSize)
+	}
 
    public checkResponse(response) {
       // this.productsList = null;

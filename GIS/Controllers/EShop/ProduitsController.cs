@@ -64,7 +64,32 @@ namespace WebAPI.Controllers.EShop
             var prods2 = _context.Produits.ToList();
 
 
-            var countDetails = prods.Count();
+            var countDetails = prods2.Count();
+
+            var result = new GIS.Models.Query.PageResult<Produit>
+            {
+                Count = countDetails,
+                PageIndex = page ?? 1,
+                PageSize = pagesize,
+                Items = prods2.Skip((page - 1 ?? 0) * pagesize).Take(pagesize).ToList()
+            };
+
+
+            //return Ok(prods);
+            return Ok(result);
+        }
+
+
+        // GET: api/Produits/WithSousCategorie
+        [HttpGet("WithSousCategorie")]
+        [EnableQuery]
+        public async Task<ActionResult<IQueryable<Produit>>> GetProduitsWithSousCategorie(int? page, string sousCategorie, int pagesize = 10)
+        {
+
+            var prods2 = await _context.Produits.Include(x=>x.SousCategorie).Where(x=>x.SousCategorie.NsousCategorie.ToLower()==sousCategorie).ToListAsync();
+
+
+            var countDetails = prods2.Count();
 
             var result = new GIS.Models.Query.PageResult<Produit>
             {
@@ -75,7 +100,7 @@ namespace WebAPI.Controllers.EShop
             };
 
 
-            //return Ok(prods);
+
             return Ok(result);
         }
 

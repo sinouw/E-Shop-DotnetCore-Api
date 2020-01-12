@@ -50,7 +50,7 @@ export class MenuComponent implements OnInit {
       this.getCategories().subscribe((res:any) => {
         // debugger
         
-        console.clear()
+        
         // debugger
           res.forEach(categorie => {
             let scatmenu :any =[]
@@ -64,7 +64,6 @@ export class MenuComponent implements OnInit {
             }
             
             scatmenu.push(scat)
-            console.log("souscat menu : ",this.souscategMenu);
             
           });
           
@@ -80,7 +79,6 @@ export class MenuComponent implements OnInit {
            this.souscategMenu.length=0 
         });
         // this.MenuChilren=this.categories
-        console.log("MenuChilren",this.MenuChilren)
         
  }); 
 
@@ -127,13 +125,12 @@ export class MenuComponent implements OnInit {
       if (item.children && item.children.length) {
          this.expanded = !this.expanded;
       }
-      console.log(item);
       
    }
 
 
    public redirectTo(subchildState){
-      let souscategorie = subchildState.state.split("/")[1]
+      let souscategorie = subchildState.state.split("/")[1].toLowerCase()
       
     this.router.navigate(['/products', souscategorie]);
      

@@ -41,8 +41,6 @@ export class MenuComponent implements OnInit {
     menu : Menu[]=[];
     MenuChilren : Menu[]=[];
     souscategMenu :Menu[]=[]
-    categories:any=[]
-    souscategories :SousCateg[]=[]
     expanded       : boolean;
 
    constructor(public menuItems: MenuItems,public router: Router, public translate: TranslateService,
@@ -131,7 +129,6 @@ export class MenuComponent implements OnInit {
 
    public redirectTo(subchildState){
       let souscategorie = subchildState.state.split("/")[1].toLowerCase()
-      
     this.router.navigate(['/products', souscategorie]);
      
    }

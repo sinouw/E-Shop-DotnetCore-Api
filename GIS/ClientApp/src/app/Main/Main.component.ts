@@ -12,13 +12,24 @@ import { Meta, Title } from "@angular/platform-browser";
 import { AdminGenericService } from '../AdminPanel/Service/AdminGeneric.service';
 import { BaseUrl } from '../models/baseurl.data';
 
+export interface Menu {
+   state: string;
+   name?: string;
+   type?: string;
+   icon?: string;
+   children?: Menu[];
+ }
+
+
 @Component({
   selector: 'app-main',
   templateUrl: './Main.component.html',
   styleUrls: ['./Main.component.scss']
 })
 export class MainComponent implements OnInit {
-
+   menu : Menu[]=[];
+   MenuChilren : Menu[]=[];
+   souscategMenu :Menu[]=[]
    timer = 0;
    isRtl: any;
    private _dirChangeSubscription = Subscription.EMPTY;
@@ -33,6 +44,81 @@ export class MainComponent implements OnInit {
                meta: Meta, title: Title,
                private activatedRoute: ActivatedRoute,
                private genericservice: AdminGenericService) { 
+
+
+                  this.getCategories().subscribe((res:any) => {
+                     // debugger
+                     
+                     
+                     // debugger
+                       res.forEach(categorie => {
+                         let scatmenu :any =[]
+                       categorie.children.forEach(souscateg => {
+                        const scat ={
+                           state: "products/"+souscateg.state.toLowerCase(),
+                           queryState: souscateg.name,
+                           name: souscateg.name.toUpperCase(),
+                           type: 'queryParams',
+                           icon: 'arrow_right_alt',
+                         }
+                         
+                         scatmenu.push(scat)
+                         
+                       });
+                       
+                       this.MenuChilren.push(
+                         {
+                           state: categorie.state,
+                           name: categorie.name,
+                           type: 'sub',
+                           icon: 'arrow_right_alt',
+                           children: scatmenu
+                         }
+                       )
+                        this.souscategMenu.length=0 
+                     });
+                     // this.MenuChilren=this.categories
+                     
+              }); 
+             
+               
+                            
+                       
+                   
+             // debugger
+                   this.menu = [{
+                     state: 'home',
+                     name: 'ACCEUIL',
+                     type: 'link',
+                     icon: 'home',
+                     },
+                     {
+                       state: 'products',
+                       name: 'PRODUCTS',
+                       type: 'link',
+                       icon: 'party_mode'
+                   },
+                
+                   {
+                     state: 'products',
+                     name: 'CATEGORIES',
+                     type: 'sub',
+                     icon: 'party_mode',
+                     children: this.MenuChilren
+                   },
+                   {
+                     state: 'contact',
+                     name: 'CONTACT US',
+                     type: 'link',
+                     icon: 'perm_contact_calendar'
+                 },
+               ]
+
+
+
+
+
+
 
       title.setTitle('Embryo - Angular Material Design eCommerce Template');
 

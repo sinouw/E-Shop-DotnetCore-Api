@@ -9,7 +9,6 @@ import { ProductsListComponent } from './ProductsList/ProductsList.component';
 import { DetailPageComponent } from './DetailPage/DetailPage.component';
 import { GlobalModule } from '../../Global/Global.module';
 import { TemplatesModule } from '../../Templates/Templates.module';
-
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule, 
 			MatCardModule, 

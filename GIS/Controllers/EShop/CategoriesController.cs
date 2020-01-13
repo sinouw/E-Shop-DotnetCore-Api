@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GIS.Models.DTO;
 using GIS.Models.GisShop;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
@@ -31,8 +32,7 @@ namespace WebAPI.Controllers.EShop
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<SimpleCategory>>> GetCategoriesDto()
         {
-            var ls = await _context.Categories.Include(c => c.SousCategories).ThenInclude(sc => sc.Produits).ThenInclude(p => p.Images)
-                   .ToListAsync();
+            var ls = await _context.Categories.Include(c => c.SousCategories).ToListAsync();
             var catList = new List<SimpleCategory>();
 
             ls.ForEach(c =>
@@ -41,6 +41,24 @@ namespace WebAPI.Controllers.EShop
                 c.SousCategories.Select(s => s.NsousCategorie).ToList().ForEach(s => souscatlist.Add(new SimpleCategory(s, null)));
                 catList.Add(new SimpleCategory(c.Ncategorie,souscatlist ));
                 });
+            return catList;
+
+        }
+
+        // GET: api/Categories/CategSousCategdto
+        [HttpGet("CategSousCategdto")]
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<CategSousCateg>>> GetCategoriesSouscatesDto()
+        {
+            var ls = await _context.Categories.Include(c => c.SousCategories).ToListAsync();
+            var catList = new List<CategSousCateg>();
+
+            ls.ForEach(c =>
+            {
+                var souscatlist = new List<string>();
+                c.SousCategories.Select(s => s.NsousCategorie).ToList().ForEach(s => souscatlist.Add(s));
+                catList.Add(new CategSousCateg(c.Ncategorie, souscatlist));
+            });
             return catList;
 
         }

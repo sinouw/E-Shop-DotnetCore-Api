@@ -5,6 +5,9 @@ import {EmbryoService} from '../../../Services/Embryo.service';
 import { AdminGenericService } from 'src/app/AdminPanel/Service/AdminGeneric.service';
 import { BaseUrl } from 'src/app/models/baseurl.data';
 import { PageEvent, MatPaginator , MatTableDataSource } from '@angular/material';
+import { log } from 'util';
+import {SousCateg} from '../../../Models/souscategorie.model'
+import {Category} from '../../../Models/category.model'
 
 @Component({
     selector: 'app-ProductsList',
@@ -22,18 +25,20 @@ export class ProductsListComponent implements OnInit {
     pageTitle: string;
     subPageTitle: string;
     public Count: number;
-    public pageNumber: number = 1;
+    public pageNumber: number = 0;
 
          // MatPaginator Inputs
     length = 100;
     pageSize = 4;
-    pageSizeOptions: number[] = [5, 10, 25, 100];
+    pageSizeOptions: number[] = [4, 10, 25, 100];
     dataSource : MatTableDataSource<any> = new MatTableDataSource<any>();
     pageEvent: PageEvent;
     cardsObs: Observable<any>;
 
     subscribers: any = {};
     productsGrid: any;
+    categories: any;
+    public catt: Category[];
 
     constructor(
         private route: ActivatedRoute,
@@ -44,8 +49,19 @@ export class ProductsListComponent implements OnInit {
     ) {
     }
 
-    ngOnInit() {
+    getCategories() {
+        this.genericservice.get(BaseUrl + '/categories/list')
+            .subscribe(res => {
+                console.log(res);
+                this.catt = res;
+                console.log(this.catt);
+            }, err => {
+                console.log(err);
 
+            });
+    }
+    ngOnInit() {
+        this.getCategories();
         this.changeDetectorRef.detectChanges();
 
         this.dataSource.paginator = this.paginator;
@@ -76,6 +92,7 @@ export class ProductsListComponent implements OnInit {
                 this.getPageTitle();
             });
         });
+        
     }
 
     list(){
@@ -83,25 +100,29 @@ export class ProductsListComponent implements OnInit {
 		return this.genericservice.get(BaseUrl+'/Produits?&page='+this.pageNumber+'&pageSize='+this.pageSize)
 	}
 
-
+    checkValue(event: any){
+        console.log(event);
+     }
     onPage(pageEvent: PageEvent) {
-        this.genericservice.get(BaseUrl+'/Produits?page='+ pageEvent.pageIndex+"&pageSize="+this.pageSize)
+        this.genericservice.get(BaseUrl + '/Produits?page=' + pageEvent.pageIndex + "&pageSize=" +pageEvent.pageSize)
         .subscribe(res=>{
             this.productsGrid=res.Items
             this.pageNumber = res.pageIndex;
             // this.length = res.Count;
-
+            console.log(res)
             this.dataSource = new MatTableDataSource<any>(this.productsGrid);
             this.cardsObs = this.dataSource.connect();
             console.log(this.cardsObs)
             // this.dataSource.paginator = this.paginator;
+
         },
         err=>{
             console.log(err);
             
         })
 
-     
+        console.log(pageEvent)
+
         
 
 
@@ -168,7 +189,9 @@ export class ProductsListComponent implements OnInit {
          this.dataSource.filter = value;
          if (this.dataSource.paginator) {
              this.dataSource.paginator.firstPage();
-         }
-        }
+      }
+    }
+
+
     
 }

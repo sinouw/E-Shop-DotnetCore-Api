@@ -39,40 +39,26 @@ namespace WebAPI.Controllers.EShop
         // GET: api/Produits
         [HttpGet]
         [EnableQuery]
-        public ActionResult<IQueryable<Produit>> GetProduits(int? page, int pagesize = 10)
+        public ActionResult<IQueryable<Produit>> GetProduits(int? page, int pagesize = 10,string filters =null)
         {
-            
-
-            var prods = _context.Produits.Select(s => new
-            {
-                s.IdProd,
-                s.NomProduit,
-                s.Description,
-                s.Prix,
-                s.Disponible,
-                s.Remise,
-                s.Couleur,
-                s.Marque,
-                s.CreationDate,
-                s.IdScat,
-                NsousCategorie = s.SousCategorie.NsousCategorie,
-                s.FrontImg,
-                s.Images,
-                s.Caracteristiques
-            });
-            //}).AsQueryable();
-
             var prods2 = _context.Produits.ToList();
+            var fs = new List<string>();
+            if (filters != null)
+            {
+                fs = filters.Split('|').ToList();
+                prods2 = prods2.Where(p => fs.Contains(p.SousCategorie.NsousCategorie)).ToList();
+            }
 
-
-            var countDetails = prods.Count();
+           
+            var countDetails = prods2.Count();
 
             var result = new GIS.Models.Query.PageResult<Produit>
             {
                 Count = countDetails,
-                PageIndex = page ?? 1,
-                PageSize = 10,
-                Items = prods2.Skip((page - 1 ?? 0) * pagesize).Take(pagesize).ToList()
+                PageIndex = page ?? 0,
+                PageSize = pagesize,
+                Items = prods2.Skip((page ?? 0) * pagesize).Take(pagesize).ToList(),
+                Filters = fs
             };
 
 
@@ -80,6 +66,47 @@ namespace WebAPI.Controllers.EShop
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("Search")]
+        //POST : /api/Produits/Search
+        public object SearchProduit([FromBody] SearchFilter model)
+        {
+
+            try
+            {
+                var prods = _context.Produits.Select(s => new
+                {
+                    s.IdProd,
+                    s.NomProduit,
+                    s.Description,
+                    s.Prix,
+                    s.Disponible,
+                    s.Remise,
+                    s.Couleur,
+                    s.Marque,
+                    s.CreationDate,
+                    s.IdScat,
+                    NCategorie = s.SousCategorie.Categorie.Ncategorie,
+                    NsousCategorie = s.SousCategorie.NsousCategorie,
+                    FrontImg = s.FrontImg,
+                    s.Images,
+                    s.Caracteristiques
+                }).Where(p=> 
+                (string.IsNullOrEmpty(model.NomProduit)|| p.NomProduit.ToUpper()
+                .Contains(model.NomProduit.ToUpper()))
+                && (string.IsNullOrEmpty(model.Categorie) || p.NCategorie.ToUpper()
+                .Contains(model.Categorie.ToUpper()))
+                && (string.IsNullOrEmpty(model.SousCategorie) || p.NsousCategorie.ToUpper()
+                .Contains(model.SousCategorie.ToUpper())));
+
+                return Ok(prods);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         // GET: api/Produits/5
         [HttpGet("{id}")]
         [EnableQuery]

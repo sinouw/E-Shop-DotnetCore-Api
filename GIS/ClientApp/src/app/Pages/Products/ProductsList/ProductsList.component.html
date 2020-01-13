@@ -11,6 +11,11 @@
                     <mat-form-field class="w-100" floatLabel="never">
                         <input matInput placeholder="Search Products" (keyup)="applyFilter($event.target.value,$event.code)">
                     </mat-form-field>
+                    <ul *ngFor="let c of catt">
+                        <li>
+                          <input type="checkbox" id={{c}} [(ngModel)]="isChecked" (change)="checkValue(isChecked?'add':'remove')">{{ c?.Name }}
+                        </li>
+                      </ul>
                 </div>
                 <!-- form-group -->
                 <div class="contact-btn" fxFlex.xs="100" fxFlex.sm="100" fxFlex.md="300px" fxFlex.lg="300px" fxFlex.xl="300px">

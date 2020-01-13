@@ -14,6 +14,8 @@ import { PageEvent, MatPaginator , MatTableDataSource } from '@angular/material'
 export class ProductsListComponent implements OnInit {
 
     @ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
+    
+    panelOpenState = false;
     Products: any[] = [];
     type: any;
     pips: boolean = true;
@@ -22,8 +24,8 @@ export class ProductsListComponent implements OnInit {
     pageTitle: string;
     subPageTitle: string;
     public Count: number;
-    public pageNumber: number=1;
-
+    public pageNumber: number=0;
+    brandsOfProducts : any =[];
          // MatPaginator Inputs
     length = 100;
     pageSize = 4;
@@ -31,6 +33,8 @@ export class ProductsListComponent implements OnInit {
     dataSource : MatTableDataSource<any> = new MatTableDataSource<any>();
     pageEvent: PageEvent;
     cardsObs: Observable<any>;
+    categoriesdtopsimple: any=[];
+
 
     subscribers: any = {};
     productsGrid: any;
@@ -50,22 +54,9 @@ export class ProductsListComponent implements OnInit {
         this.route.params.subscribe((res:any) => {
             this.type = res.type;
              this.getData()
-            console.log("params",res.type);
+             this.getCategoriesDtosimple()
             
          })
-
-        
-
-
-        // this.route.params.subscribe(params => {
-        //     this.route.queryParams.forEach(queryParams => {
-        //         this.category = queryParams['category'];
-        //         this.type = null;
-        //         this.type = params['type'];
-              
-        //         this.getPageTitle();
-        //     });
-        // });
     }
 
     list(){
@@ -73,7 +64,24 @@ export class ProductsListComponent implements OnInit {
     }
     listWithSousCat(){
 		// return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page='+this.pageNumber+"&sousCategorie="+this.type+'&pageSize='+this.pageSize)	
-		return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page=1&sousCategorie='+this.type+'&pageSize='+this.pageSize)	
+		return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page=0&sousCategorie='+this.type+'&pageSize='+this.pageSize)	
+    }
+
+    getCategoriesDtosimple() {
+        this.genericservice.get(BaseUrl + '/Categories/CategSousCategdto')
+            .subscribe(res => {
+                console.log(res);
+                this.categoriesdtopsimple = res;
+            }, err => {
+                console.log(err);
+
+            });
+    }
+
+
+    onselectCategorie(categories,souscategorie){
+        console.log(categories,souscategorie);
+        
     }
 
 
@@ -82,11 +90,11 @@ export class ProductsListComponent implements OnInit {
         
         console.log(this.type);
         
-        this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?page='+ pageEvent.pageIndex+"&sousCategorie="+this.type+"&pageSize="+this.pageSize)
+        this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?page='+ pageEvent.pageIndex+"&sousCategorie="+this.type+"&pageSize="+pageEvent.pageSize)
         .subscribe(res=>{
             this.productsGrid=res.Items
             this.pageNumber = res.pageIndex;
-            this.length = res.Count;
+            // this.length = res.Count;
 
             this.dataSource = new MatTableDataSource<any>(this.productsGrid);
             this.cardsObs = this.dataSource.connect();
@@ -111,8 +119,8 @@ export class ProductsListComponent implements OnInit {
                 this.productsGrid=res.Items
                 this.pageNumber = res.pageIndex;
                 // this.length = res.Count;
-                this.length = res.Count;
-    
+                // this.length = res.Count;
+                this.brandsOfProducts=res.Brands;
                 this.dataSource = new MatTableDataSource<any>(this.productsGrid);
                 this.cardsObs = this.dataSource.connect();
                 console.log(this.cardsObs)
@@ -135,18 +143,27 @@ export class ProductsListComponent implements OnInit {
                  this.pageNumber = res.pageIndex;
                  // this.length = res.Count;
                  this.length = res.Count;
+                 this.brandsOfProducts=res.Brands;
      
                  this.dataSource = new MatTableDataSource<any>(this.productsGrid);
                  this.cardsObs = this.dataSource.connect();
                  console.log(this.cardsObs)
                  this.dataSource.paginator = this.paginator;
-             },
+                },
              err=>{
                  console.log(err);
              })
-         }
+         } 
     }
     
+    formatLabel(value: number) {
+        if (value >= 1000) {
+          return Math.round(value / 1000) + 'k';
+        }
+        return value;
+      }
+
+
     productPage(id, NScat) {
         console.log('hello work ^^ ');
         console.log(id);

@@ -49,12 +49,6 @@ export class SideBarMenuComponent implements OnInit {
       }
       if (item.children && item.children.length) {
          this.expanded = !this.expanded;
-      }
-
-      console.log("*************this comppo yay haha ^^ *******************");
-      console.log("*************this comppo yay haha ^^ *******************");
-      console.log("*************this comppo yay haha ^^ *******************");
-      console.log("*************this comppo yay haha ^^ *******************");
-      
+      }      
    }
 }

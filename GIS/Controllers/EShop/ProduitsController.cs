@@ -40,7 +40,7 @@ namespace WebAPI.Controllers.EShop
         [EnableQuery]
         public ActionResult<IQueryable<Produit>> GetProduits(int? page, int pagesize = 10)
         {
-            
+            List<string> brands = new List<string>();
 
             var prods = _context.Produits.Select(s => new
             {
@@ -63,15 +63,21 @@ namespace WebAPI.Controllers.EShop
 
             var prods2 = _context.Produits.ToList();
 
+            foreach (var item in prods2)
+            {
+                brands.Add(item.Marque);
+            }
+
 
             var countDetails = prods2.Count();
 
             var result = new GIS.Models.Query.PageResult<Produit>
             {
                 Count = countDetails,
-                PageIndex = page ?? 1,
+                PageIndex = page ?? 0,
                 PageSize = pagesize,
-                Items = prods2.Skip((page - 1 ?? 0) * pagesize).Take(pagesize).ToList()
+                Items = prods2.Skip((page ?? 0) * pagesize).Take(pagesize).ToList(),
+                Brands = brands.ToList()
             };
 
 
@@ -79,28 +85,29 @@ namespace WebAPI.Controllers.EShop
             return Ok(result);
         }
 
-
         // GET: api/Produits/WithSousCategorie
         [HttpGet("WithSousCategorie")]
         [EnableQuery]
         public async Task<ActionResult<IQueryable<Produit>>> GetProduitsWithSousCategorie(int? page, string sousCategorie, int pagesize = 10)
         {
+            List<string> brands = new List<string>();
+            var prods = await _context.Produits.Include(x=>x.SousCategorie).Where(x=>x.SousCategorie.NsousCategorie.ToLower()==sousCategorie).ToListAsync();
 
-            var prods2 = await _context.Produits.Include(x=>x.SousCategorie).Where(x=>x.SousCategorie.NsousCategorie.ToLower()==sousCategorie).ToListAsync();
+            foreach (var item in prods)
+            {
+                brands.Add(item.Marque);
+            }
 
-
-            var countDetails = prods2.Count();
+            var countDetails = prods.Count();
 
             var result = new GIS.Models.Query.PageResult<Produit>
             {
                 Count = countDetails,
-                PageIndex = page ?? 1,
-                PageSize = 10,
-                Items = prods2.Skip((page - 1 ?? 0) * pagesize).Take(pagesize).ToList()
+                PageIndex = page ?? 0,
+                PageSize = pagesize,
+                Items = prods.Skip((page ?? 0) * pagesize).Take(pagesize).ToList(),
+                Brands = brands.ToList()
             };
-
-
-
             return Ok(result);
         }
 

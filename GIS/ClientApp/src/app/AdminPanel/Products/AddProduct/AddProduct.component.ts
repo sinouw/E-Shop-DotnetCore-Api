@@ -3,7 +3,7 @@ import {FormGroup, FormBuilder, Validators} from '@angular/forms';
 import {AdminGenericService} from '../../Service/AdminGeneric.service';
 import {BaseUrl} from '../../../models/baseurl.data';
 import {HttpEventType} from '@angular/common/http';
-
+import {Caracteristic} from '../../../Models/Caracteristic.model'
 @Component({
     selector: 'app-add-product',
     templateUrl: './AddProduct.component.html',
@@ -23,7 +23,7 @@ export class AddProductComponent implements OnInit {
     souscategories: any[] = [];
     productImages: any [] = [];
     base64Image: any;
-
+    Caracteristiques: Caracteristic[]=[{name:'',value:''}];
     
     'data': any = [
         {
@@ -80,7 +80,8 @@ export class AddProductComponent implements OnInit {
 
     AddProduct() {
 
-      
+      console.log(this.form.value)
+      console.log(this.Caracteristiques)
         this.genericservice.post(BaseUrl + '/Produits', this.form.value)
             .subscribe(res => {
                     console.log(res);
@@ -139,6 +140,11 @@ export class AddProductComponent implements OnInit {
 
     }
 
+    addItem() {
+
+        var currentElement =  {name:'',value:''};  
+        this.Caracteristiques.push(currentElement);
+      }
 
     UpdateFrontImg(id){
         

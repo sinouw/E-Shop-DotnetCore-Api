@@ -146,7 +146,7 @@ namespace WebAPI.Controllers.EShop
         [HttpPost]
         public async Task<ActionResult<Produit>> PostProduit(Produit produit)
         {
-            
+            produit.Caracteristiques.ToList().ForEach(c => _context.Caracteristique.Add(c));
             _context.Produits.Add(produit);
             await _context.SaveChangesAsync();
 

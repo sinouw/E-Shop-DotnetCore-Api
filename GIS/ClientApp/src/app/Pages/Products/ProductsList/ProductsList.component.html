@@ -34,8 +34,8 @@
                 <mat-card class="product-card" style="margin: 10px">
                     <h5>Brand :</h5>
                     <mat-divider></mat-divider>
-                    <mat-selection-list #brands>
-                        <mat-list-option *ngFor="let brand of brandsOfProducts">
+                    <mat-selection-list #list [(ngModel)]="selectedBrands" (ngModelChange)="onselectBrand($event)">
+                        <mat-list-option *ngFor="let brand of brandsOfProducts" [value]="brand">
                             {{brand}}
                         </mat-list-option>
                     </mat-selection-list>
@@ -57,7 +57,7 @@
                                     {{categorie?.CategName}}
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    yo
+                                    <!-- description -->
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
                             <ul *ngFor="let souscat of categorie.SousCategs" (click)="onselectCategorie(categorie,souscat)">

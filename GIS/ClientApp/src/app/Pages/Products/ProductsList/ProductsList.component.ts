@@ -39,6 +39,7 @@ export class ProductsListComponent implements OnInit {
     subscribers: any = {};
     productsGrid: any;
     selectedBrands: any=[];
+    filterValue: string;
 
 
 
@@ -202,11 +203,27 @@ export class ProductsListComponent implements OnInit {
     this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
   }
 
-  applyFilter(filterValue: string,event) {
-    let value =filterValue.trim().toLowerCase()
-
-    // this.updateData()
-
+  applyFilter() {
+    let value =this.filterValue.trim().toLowerCase()
+    console.log(value);
+    
+    this.genericservice.get(BaseUrl+'/Produits/search?&page='+0+'&pageSize='+this.pageSize+'&filter='+value)
+    .subscribe(res => {
+        this.productsGrid=res.Items
+        this.pageNumber = res.pageIndex;
+        this.length = res.Count;
+        // this.brandsOfProducts=res.Brands;
+        this.dataSource = new MatTableDataSource<any>(this.productsGrid);
+        this.cardsObs = this.dataSource.connect();
+        this.dataSource.paginator = this.paginator;
+        console.log(res)
+    
+    },
+    err=>{
+        console.log(err);
+        
+    });
+   
 
         //  this.dataSource.filter = value;
         //  if (this.dataSource.paginator) {

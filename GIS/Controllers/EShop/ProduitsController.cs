@@ -77,6 +77,31 @@ namespace WebAPI.Controllers.EShop
         }
 
 
+        // GET: api/Produits/search
+        [HttpGet("search")]
+        [EnableQuery]
+        public async Task<ActionResult<IQueryable<Produit>>> SearchProduitsAsync(int? page, int pagesize = 10,string filter = "")
+        {
+
+                List<Produit> prods = await _context.Produits.Where(x=>x.NomProduit.Contains(filter) ).ToListAsync();
+                //prods = prods.Where(p => filter.ToLower().Contains(p.NomProduit.ToLower())).ToList();
+           
+            
+            var countDetails = prods.Count();
+
+            var result = new GIS.Models.Query.PageResult<Produit>
+            {
+                Count = countDetails,
+                PageIndex = page ?? 0,
+                PageSize = pagesize,
+                Items = prods.Skip((page ?? 0) * pagesize).Take(pagesize).ToList(),
+                FilterProdName=filter
+            };
+                  return Ok(result);
+            
+        }
+
+
         // GET: api/Produits/5
         [HttpGet("{id}")]
         [EnableQuery]

@@ -17,7 +17,7 @@ export class ProductsListComponent implements OnInit {
     
     panelOpenState = false;
     Products: any[] = [];
-    type: any;
+    type: any="";
     pips: boolean = true;
     tooltips: boolean = true;
     category: any;
@@ -29,6 +29,7 @@ export class ProductsListComponent implements OnInit {
          // MatPaginator Inputs
     length = 100;
     pageSize = 4;
+    filters:any="";
     pageSizeOptions: number[] = [5, 10, 25, 100];
     dataSource : MatTableDataSource<any> = new MatTableDataSource<any>();
     pageEvent: PageEvent;
@@ -38,6 +39,10 @@ export class ProductsListComponent implements OnInit {
 
     subscribers: any = {};
     productsGrid: any;
+    selectedBrands: any;
+
+
+
 
     constructor(
         private route: ActivatedRoute,
@@ -59,13 +64,13 @@ export class ProductsListComponent implements OnInit {
          })
     }
 
-    list(){
-		return this.genericservice.get(BaseUrl+'/Produits?&page='+this.pageNumber+'&pageSize='+this.pageSize)
+    list(souscategorie,filters){
+		return this.genericservice.get(BaseUrl+'/Produits?&page='+0+'&pageSize='+this.pageSize+'&sousCategorie='+souscategorie+'&filter='+filters)
     }
-    listWithSousCat(){
-		// return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page='+this.pageNumber+"&sousCategorie="+this.type+'&pageSize='+this.pageSize)	
-		return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page=0&sousCategorie='+this.type+'&pageSize='+this.pageSize)	
-    }
+    // listWithSousCat(filters=this.filters){
+	// 	// return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page='+this.pageNumber+"&sousCategorie="+this.type+'&pageSize='+this.pageSize)	
+	// 	return this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?&page=0&sousCategorie='+this.type+'&pageSize='+this.pageSize+'&filter='+filters)	
+    // }
 
     getCategoriesDtosimple() {
         this.genericservice.get(BaseUrl + '/Categories/CategSousCategdto')
@@ -80,15 +85,20 @@ export class ProductsListComponent implements OnInit {
 
 
     onselectCategorie(categories,souscategorie){
+        console.clear()
         console.log(categories,souscategorie);
         
     }
 
+    onselectBrand(event){
+    //   this.list()
+        console.log(this.selectedBrands);
+
+        
+        
+    }
 
     onPage(pageEvent: PageEvent) {
-        console.clear();
-        
-        console.log(this.type);
         
         this.genericservice.get(BaseUrl+'/Produits/WithSousCategorie?page='+ pageEvent.pageIndex+"&sousCategorie="+this.type+"&pageSize="+pageEvent.pageSize)
         .subscribe(res=>{
@@ -98,7 +108,6 @@ export class ProductsListComponent implements OnInit {
 
             this.dataSource = new MatTableDataSource<any>(this.productsGrid);
             this.cardsObs = this.dataSource.connect();
-            console.log(this.cardsObs)
         },
         err=>{
             console.log(err);   
@@ -107,19 +116,12 @@ export class ProductsListComponent implements OnInit {
     
 
     getData(){
-        if(this.type===undefined){
-            this.dataSource.data=[]
-            this.changeDetectorRef.detectChanges();
-            this.dataSource.paginator = this.paginator;
-    
-            this.list().subscribe(res=>{
-            // this.listWithSousCat().subscribe(res=>{
+        // if(this.type===undefined){
+            this.list( this.type,this.filters).subscribe(res=>{
                 console.log(res);
                 
                 this.productsGrid=res.Items
                 this.pageNumber = res.pageIndex;
-                // this.length = res.Count;
-                // this.length = res.Count;
                 this.brandsOfProducts=res.Brands;
                 this.dataSource = new MatTableDataSource<any>(this.productsGrid);
                 this.cardsObs = this.dataSource.connect();
@@ -129,31 +131,25 @@ export class ProductsListComponent implements OnInit {
             err=>{
                 console.log(err);
             })
-         }
-         else{
-             this.dataSource.data=[]
-             this.changeDetectorRef.detectChanges();
-             this.dataSource.paginator = this.paginator;
-     
-            //  this.list().subscribe(res=>{
-             this.listWithSousCat().subscribe(res=>{
-                 console.log(res);
+        //  }
+        //  else{
+        //      this.listWithSousCat().subscribe(res=>{
+        //          console.log(res);
                  
-                 this.productsGrid=res.Items
-                 this.pageNumber = res.pageIndex;
-                 // this.length = res.Count;
-                 this.length = res.Count;
-                 this.brandsOfProducts=res.Brands;
+        //          this.productsGrid=res.Items
+        //          this.pageNumber = res.pageIndex;
+        //          this.length = res.Count;
+        //          this.brandsOfProducts=res.Brands;
      
-                 this.dataSource = new MatTableDataSource<any>(this.productsGrid);
-                 this.cardsObs = this.dataSource.connect();
-                 console.log(this.cardsObs)
-                 this.dataSource.paginator = this.paginator;
-                },
-             err=>{
-                 console.log(err);
-             })
-         } 
+        //          this.dataSource = new MatTableDataSource<any>(this.productsGrid);
+        //          this.cardsObs = this.dataSource.connect();
+        //          console.log(this.cardsObs)
+        //          this.dataSource.paginator = this.paginator;
+        //         },
+        //      err=>{
+        //          console.log(err);
+        //      })
+        //  } 
     }
     
     formatLabel(value: number) {

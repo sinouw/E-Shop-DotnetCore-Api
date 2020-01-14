@@ -12,5 +12,7 @@ namespace GIS.Models.Query
         public int PageSize { get; set; }
         public List<T> Items { get; set; }
         public List<string> Brands { get; set; }
+        //public List<string> Filters { get; set; }
+        public List<string> Filters { get; set; }
     }
 }

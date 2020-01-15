@@ -83,8 +83,10 @@ namespace WebAPI.Controllers.EShop
         public async Task<ActionResult<IQueryable<Produit>>> SearchProduitsAsync(int? page, int pagesize = 10,string filter = "")
         {
 
-                List<Produit> prods = await _context.Produits.Where(x=>x.NomProduit.Contains(filter) ).ToListAsync();
-                //prods = prods.Where(p => filter.ToLower().Contains(p.NomProduit.ToLower())).ToList();
+                List<Produit> prods = await _context.Produits.Include(x=>x.SousCategorie)
+                .Where(x=> filter.ToLower().Contains(x.NomProduit.ToLower())
+                || filter.ToLower().Contains(x.SousCategorie.NsousCategorie.ToLower())
+                || filter.ToLower().Contains(x.Marque.ToLower())).ToListAsync();
            
             
             var countDetails = prods.Count();

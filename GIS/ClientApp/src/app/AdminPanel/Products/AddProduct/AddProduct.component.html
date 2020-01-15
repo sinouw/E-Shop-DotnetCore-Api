@@ -33,8 +33,49 @@
                               -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
                               box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); top: 0;left: 100%;" lensStyle="width:100px; height:100px" containerStyle="">
                                     </embryo-ImgZoom>
+
+                                    <!-- <table>
+                                        <tr>
+                                            <th>Key : </th>
+                                            <th>Value : </th>
+
+                                        </tr>
+                                        <tr *ngFor="let caract of caracteristiques; let i = index;" #rows>
+
+                                            <td>
+                                                {{caract.key}}
+                                            </td>
+                                            <td>
+                                                {{caract.value}}
+                                            </td>
+                                            <td>
+                                                <button type="button" mat-icon-button name="delete" (click)="deleteRow(i)"><mat-icon>delete</mat-icon></button>
+                                            </td>
+                                        </tr>
+
+                                    </table> -->
+
+                                    <table class="w-100 table-scroll-wrap" mat-table [dataSource]="caracteristiquesList" matSort>
+                                        <ng-container matColumnDef="key">
+                                            <th class="text-nowrap px-3" mat-header-cell *matHeaderCellDef mat-sort-header>Cle </th>
+                                            <td class="text-nowrap product-name" mat-cell *matCellDef="let element"><span>{{element?.key}}</span></td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="value">
+                                            <th class="text-nowrap px-3" mat-header-cell *matHeaderCellDef mat-sort-header>Valeur</th>
+                                            <td class="text-nowrap product-name" mat-cell *matCellDef="let element"><span>{{element?.value}}</span></td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="action">
+                                            <th class="px-3 text-nowrap" mat-header-cell *matHeaderCellDef> Action </th>
+                                            <td class="px-3 text-nowrap" mat-cell *matCellDef="let element;let i = index;">
+                                                <button type="button" mat-icon-button name="delete" color="warn" (click)="deleteRow(i)"><mat-icon>clear</mat-icon></button>
+                                            </td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="displayedProductColumns"></tr>
+                                        <tr mat-row *matRowDef="let row; columns: displayedProductColumns"></tr>
+                                    </table>
                                 </div>
                                 <!-- relative -->
+
                             </div>
                         </div>
 
@@ -50,7 +91,7 @@
 
                                 <span class="font-medium"> Ajouter le nom du produit </span>:
                                 <h3 class="add-text">
-                                    <input matInput formControlName="NomProduit" type="text" placeholder="product Name" autocomplete="off"></h3>
+                                    <input matInput formControlName="NomProduit" type="text" placeholder="Nom Du Produit" autocomplete="off"></h3>
                                 <div *ngIf="form.get('NomProduit').hasError('required') && form.get('NomProduit').touched">Ce champ ne doit pas être vide.</div>
 
 
@@ -74,7 +115,7 @@
                                 </div>
 
                                 <div class="no-style mb-4">
-                                    <span class="font-medium"> Disponibilité </span>:
+                                    <span class="font-medium">Ajouter la Disponibilité </span>:
                                     <div class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
 
                                         <mat-select class="ml-2" matNativeControl formControlName="Disponible" placeholder="Disponibilité" type="text" autocomplete="off">
@@ -87,10 +128,10 @@
 
                                 </div>
                                 <div class="no-style mb-4">
-                                    <span class="font-medium"> Couleur </span>:
+                                    <span class="font-medium">Ajouter une Couleur </span>:
                                     <div class="add-text" fxLayout="row wrap" fxLayoutAlign="start start">
 
-                                        <mat-select class="ml-2" matNativeControl formControlName="Couleur" type="text" placeholder="Color" autocomplete="off">
+                                        <mat-select class="ml-2" matNativeControl formControlName="Couleur" type="text" placeholder="Couleur" autocomplete="off">
 
                                             <mat-option value="Blanc">Blanc</mat-option>
                                             <mat-option value="Noir">Noir</mat-option>
@@ -111,7 +152,7 @@
 
                                 </div>
                                 <div class="short-des">
-                                    <span class="font-medium"> Ajouter Description </span>:
+                                    <span class="font-medium"> Ajouter Dne Description </span>:
                                     <p class="add-text"><textarea matInput formControlName="Description" placeholder="Description" autocomplete="off"></textarea></p>
                                     <div *ngIf="form.get('Description').hasError('required') && form.get('Description').touched">Ce champ ne doit pas être vide.</div>
 
@@ -127,6 +168,42 @@
                                     </p>
                                 </div>
                                 <div *ngIf="form.get('IdScat').hasError('required') && form.get('IdScat').touched">Ce champ ne doit pas être vide.</div>
+
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+
+
+                                <form [formGroup]="caracForm" (ngSubmit)="validate()">
+                                    <table>
+                                        <tr>
+                                            <th>Cle</th>
+                                            <th>Valeur</th>
+                                            <th>Ajouter</th>
+                                        </tr>
+                                        <tr>
+                                            <td><input matInput formControlName="key" placeholder="ajouter une cle"></td>
+                                            <td><input matInput formControlName="value" placeholder="ajouter une valeur"></td>
+                                            <td> <button mat-icon-button color="primary"><mat-icon>add</mat-icon></button></td>
+
+                                        </tr>
+                                    </table>
+                                </form>
+
+
+
+
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+                                <!-- ************************************************************************* -->
+
+
                                 <div class="mb-5 detail-btns">
                                     <button mat-raised-button color="accent" class="button-lg mr-3" [disabled]="form.invalid || addProductBtnDisa" (click)="onSubmit()">Creer</button>
                                     <button class="button-lg" (click)="Discard()" mat-raised-button>Annuler</button>

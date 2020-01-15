@@ -43,10 +43,9 @@ namespace WebAPI.Controllers.EShop
             List<Produit> prods2;
             List<string> brands = new List<string>();
             List<string> filters = new List<string>();
-            if (sousCategorie=="")
+            if (string.IsNullOrEmpty(sousCategorie))
             {
                 prods2 = await _context.Produits.ToListAsync();
-
             }
             else
             {
@@ -54,9 +53,9 @@ namespace WebAPI.Controllers.EShop
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                filters = filter.ToLower().Split('|').ToList();
-                prods2 = prods2.Where(p => filters.Contains(p.Marque.ToLower())).ToList();
+                prods2 = prods2.Where(p => filter.ToLower().Contains(p.Marque.ToLower())).ToList();
             }
+           
             foreach (var item in prods2)
             {
                 brands.Add(item.Marque);
@@ -77,37 +76,33 @@ namespace WebAPI.Controllers.EShop
             return Ok(result);
         }
 
-        //// GET: api/Produits/WithSousCategorie
-        //[HttpGet("WithSousCategorie")]
-        //[EnableQuery]
-        //public async Task<ActionResult<IQueryable<Produit>>> GetProduitsWithSousCategorie(int? page, string sousCategorie, int pagesize = 10, string filter = "")
-        //{
-        //    List<string> brands = new List<string>();
-        //    List<string> filters = new List<string>();
-        //    var prods = await _context.Produits.Include(x=>x.SousCategorie).Where(x=>x.SousCategorie.NsousCategorie.ToLower()==sousCategorie).ToListAsync();
-        //    if (!string.IsNullOrEmpty(filter))
-        //    {
-        //        filters = filter.ToLower().Split('|').ToList();
-        //        prods = prods.Where(p => filters.Contains(p.Marque.ToLower())).ToList();
-        //    }
-        //    foreach (var item in prods)
-        //    {
-        //        brands.Add(item.Marque);
-        //    }
 
-        //    var countDetails = prods.Count();
+        // GET: api/Produits/search
+        [HttpGet("search")]
+        [EnableQuery]
+        public async Task<ActionResult<IQueryable<Produit>>> SearchProduitsAsync(int? page, int pagesize = 10,string filter = "")
+        {
 
-        //    var result = new GIS.Models.Query.PageResult<Produit>
-        //    {
-        //        Count = countDetails,
-        //        PageIndex = page ?? 0,
-        //        PageSize = pagesize,
-        //        Items = prods.Skip((page ?? 0) * pagesize).Take(pagesize).ToList(),
-        //        Brands = brands.ToList(),
-        //        Filters = filters
-        //    };
-        //    return Ok(result);
-        //}
+                List<Produit> prods = await _context.Produits.Include(x=>x.SousCategorie)
+                .Where(x=> filter.ToLower().Contains(x.NomProduit.ToLower())
+                || filter.ToLower().Contains(x.SousCategorie.NsousCategorie.ToLower())
+                || filter.ToLower().Contains(x.Marque.ToLower())).ToListAsync();
+           
+            
+            var countDetails = prods.Count();
+
+            var result = new GIS.Models.Query.PageResult<Produit>
+            {
+                Count = countDetails,
+                PageIndex = page ?? 0,
+                PageSize = pagesize,
+                Items = prods.Skip((page ?? 0) * pagesize).Take(pagesize).ToList(),
+                FilterProdName=filter
+            };
+                  return Ok(result);
+            
+        }
+
 
         // GET: api/Produits/5
         [HttpGet("{id}")]

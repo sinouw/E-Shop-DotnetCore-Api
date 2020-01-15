@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import {FormGroup, FormBuilder, Validators, NgForm, FormControl} from '@angular/forms';
 import {AdminGenericService} from '../../Service/AdminGeneric.service';
+import {Caracteristique} from '../../../models/Caracteristique.model';
 import {BaseUrl} from '../../../models/baseurl.data';
 import {HttpEventType} from '@angular/common/http';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
     selector: 'app-add-product',
@@ -23,7 +25,23 @@ export class AddProductComponent implements OnInit {
     souscategories: any[] = [];
     productImages: any [] = [];
     base64Image: any;
+    productsGrid    : any;
+    productsList 	: any;
+    showType				: string = 'list';
+    caracteristiques : Caracteristique[]=[];
+    carac :any= {key:'',value:''}
+    caracteristiquesList
+    displayedProductColumns : string [] = ['key','value','action' ];
 
+  
+caracForm :FormGroup ;
+
+    myDataArray:any=[]
+
+    formModel = {
+        UserName: '',
+        Password: ''
+      }
     
     'data': any = [
         {
@@ -39,6 +57,16 @@ export class AddProductComponent implements OnInit {
     }
 
     ngOnInit() {
+
+
+        this.caracForm = new FormGroup({
+            key: new FormControl(),
+            value: new FormControl()
+       }); 
+
+
+        // this.caracteristiques.push(this.carac)
+
         this.getSousCategories();
         this.mainImgPath = this.data[0].image;
         this.form = this.formBuilder.group({
@@ -148,6 +176,43 @@ export class AddProductComponent implements OnInit {
         },
         err=>console.log(err)
         );
+    }
+
+
+    addRow(index) {    
+        this.carac = {key: "", value: ""};  
+        this.caracteristiques.push(this.carac);  
+        console.log(this.caracteristiques);  
+        return true;  
+    } 
+
+    deleteRow(index) {  
+        if(this.caracteristiques.length ==0) {  
+          console.log("Can't delete the row when there is only one row", 'Warning');  
+            return false;  
+        } else {  
+            this.caracteristiques.splice(index, 1);  
+            this.caracteristiquesList = new MatTableDataSource(this.caracteristiques);
+            console.log('Row deleted successfully', 'Delete row');  
+            return true;  
+        }  
+    } 
+
+
+    validate(){
+
+
+        console.log(this.caracForm.value);
+        this.caracteristiques.push(this.caracForm.value)
+        this.caracteristiquesList = new MatTableDataSource(this.caracteristiques);
+        console.log(this.caracteristiques);
+        
+    }
+    
+    TestTable(){
+        console.log(this.caracteristiques);
 
     }
+
+  
 }

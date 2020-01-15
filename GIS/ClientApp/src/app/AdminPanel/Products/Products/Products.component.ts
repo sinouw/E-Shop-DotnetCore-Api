@@ -19,7 +19,7 @@ export class ProductsComponent implements OnInit {
 	productsListCopie		      : any;
 	productsGrid 			   : any;
 	popUpDeleteUserResponse : any;
-	showType	    				: string = 'list';
+	showType				: string = 'list';
 	// displayedProductsColumns : string [] = ['id', 'image','name','brand','category', 'product_code', 'discount_price', 'price','action' ];
 	displayedProductColumns : string [] = ['image','NomProduit','Marque','NsousCategorie', 'Remise', 'Prix','action' ];
 	@ViewChild(MatPaginator,{static: false}) paginator : MatPaginator;
